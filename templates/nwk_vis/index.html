@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+<!--    <link rel="shortcut icon" href="assets/ico/favicon.ico"> ==>
+
+    <title>Simulation Visualizer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}bs/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ STATIC_URL }}css/starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Simulation Visualizer</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/main">Home</a></li>
+            <li class="active"><a href="/nwk_vis">Network</a></li>
+            <li><a href="#contact">Node</a></li>
+            <li><a href="#contact">Message</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+	<div class="col-md-12">
+	  <div class="page-header">
+	    <h1>Traffic transition</h1>
+	  </div>
+	</div>
+      </div>
+      <div class="row">
+	<div class="col-md-12">
+	  <form class="form-inline" role="form">
+	    <button type="button" onclick="show_traffic()" class="btn btn-primary">Start</button>
+	    <button type="button" onclick="load_sim_parms()" class="btn btn-primary">Load</button>
+	    <div class="form-group">
+	      <label class="sr-only" for="db_host">DB Host</label>
+	      <input type="text" class="form-control" id="db_host" placeholder="DB Host"></input>
+	    </div>
+	    <div class="form-group">
+	      <label class="sr-only" for="db_port">DB Port</label>
+	      <input type="text" class="form-control" id="db_port" placeholder="DB Port"></input>
+	    </div>
+	    <div class="form-group">
+	      <label class="sr-only" for="db_name">DB Name</label>
+	      <input type="text" class="form-control" id="db_name" placeholder="DB Name"></input>
+	    </div>
+	    <div class="form-group">
+	      <label class="sr-only" for="sim_id">Simulation ID</label>
+	      <input type="text" class="form-control" id="db_coll" placeholder="Simulation ID"></input>
+	    </div>
+	  </form>
+	</div>
+      </div><!-- /.row -->
+      <div class="row">
+	<div class="col-md-12">
+	  <div id="canvas"></div>
+	</div>
+      </div><!-- /.row -->
+      <div class="row">
+	<div class="col-md-12">
+	  <div id="sim_params"></div>
+	</div>
+      </div>
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
+    <script src="{{ STATIC_URL }}js/raphael-min.js"></script>
+    <script src="{{ STATIC_URL }}bs/js/bootstrap.min.js"></script>
+<!--    <script src="bs/js/jit.js"></script>-->
+    <script src="{{ STATIC_URL }}js/my_raphael.js"></script>
+<!--    <script src="js/jit.js"></script> -->
+  </body>
+</html>
