@@ -6,11 +6,19 @@ var bubbles;
 var style;
 
 var width = 1200;
-var height = 900;
+var height = 400;
 
 var colors = {
-    'office_blue': "#4f81bd",
-    
+    'gray-darker': "#222",
+    'gray-dark': "#333",
+    'gray': "#555",
+    'gray-light': "#999",
+    'gray-lighter': "#eee",
+		'bs-primary': "#428bca",
+		'bs-success': "#5cb85c",
+		'bs-info': "#5bc0de",
+		'bs-warning': "#f0ad4e",
+		'bs-danger': "#d9534f"
 };
 
 var nodes_per_layer;
@@ -66,69 +74,69 @@ function make_topology(data) {
     var root_ny = vert_span_nodes / 2;
     nodes[nodes_per_layer[0][0]['name']] = paper.rect(root_nx, root_ny, 
 						      20,20,1).attr({
-							  'fill': '#4f81bd',
-							  'stroke': '#dcd6f2',
+							  'fill': colors['gray-light'],
+							  'stroke': colors['gray-light'],
 							  'stroke-width': 0.5
 						      });
     texts[nodes_per_layer[0][0]['name']] = paper.text(
-	get_node_center(nodes[nodes_per_layer[0][0]['name']])[0],
-	get_node_center(nodes[nodes_per_layer[0][0]['name']])[1],
-	nodes_per_layer[0][0]['name']).rotate(90);
+				get_node_center(nodes[nodes_per_layer[0][0]['name']])[0],
+				get_node_center(nodes[nodes_per_layer[0][0]['name']])[1],
+				nodes_per_layer[0][0]['name']).rotate(90);
     // place layer 1 nodes
     for (var i=0; i < nodes_per_layer[1].length; i++) {
-	var nd = nodes_per_layer[1][i];
-	var nx = span_nodes[1] * (i+1);
-	var ny = vert_span_nodes/2 + vert_span_nodes * 1;
-	nodes[nd['name']] = paper.rect(nx, ny,
-				       20,
-				       20,1).attr({
-					   'fill': '#4f81bd',
-					   'stroke': '#dcd6f2',
-					   'stroke-width': 0.5
-				       });
-	texts[nd['name']] = paper.text(
-	    get_node_center(nodes[nd['name']])[0],
-	    get_node_center(nodes[nd['name']])[1],
-	    nd['name']).rotate(90);
+				var nd = nodes_per_layer[1][i];
+				var nx = span_nodes[1] * (i+1);
+				var ny = vert_span_nodes/2 + vert_span_nodes * 1;
+				nodes[nd['name']] = paper.rect(nx, ny,
+																			 20,
+																			 20,1).attr({
+																					 'fill': colors['gray-light'],
+																					 'stroke': colors['gray-light'],
+																					 'stroke-width': 0.5
+																			 });
+				texts[nd['name']] = paper.text(
+						get_node_center(nodes[nd['name']])[0],
+						get_node_center(nodes[nd['name']])[1],
+						nd['name']).rotate(90);
 	
-	if (nd['parent'] != "") {
-	    path_name = nd['paernt'] + "_" + nd['name'];
-	    path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
-		"L" + get_node_center_str(nodes[nd['name']]);
-	    paths[path_name] = paper.path(path_str).attr({
-		'stroke': '#4f81bd'
-	    });
-	}
+				if (nd['parent'] != "") {
+						path_name = nd['paernt'] + "_" + nd['name'];
+						path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
+								"L" + get_node_center_str(nodes[nd['name']]);
+						paths[path_name] = paper.path(path_str).attr({
+								'stroke': colors['gray']
+						});
+				}
     }
     for (var i=0; i < nodes_per_layer[2].length; i++) {
-	var nd = nodes_per_layer[2][i];
-	var nx = span_nodes[2] * (i+1) - 10;
-	var ny = vert_span_nodes/2 + vert_span_nodes * 2;
-	nodes[nd['name']] = paper.rect(nx, ny,
-				       20,
-				       20,1).attr({
-					   'fill': '#4f81bd',
-					   'stroke': '#dcd6f2',
-					   'stroke-width': 0.5
-				       });
-	texts[nd['name']] = paper.text(
-	    get_node_center(nodes[nd['name']])[0],
-	    get_node_center(nodes[nd['name']])[1],
-	    nd['name']).attr({'text-size': 6}).rotate(90);
+				var nd = nodes_per_layer[2][i];
+				var nx = span_nodes[2] * (i+1) - 10;
+				var ny = vert_span_nodes/2 + vert_span_nodes * 2;
+				nodes[nd['name']] = paper.rect(nx, ny,
+																			 20,
+																			 20,1).attr({
+																					 'fill': colors['gray-light'],
+																					 'stroke': colors['gray-light'],
+																					 'stroke-width': 0.5
+																			 });
+				texts[nd['name']] = paper.text(
+						get_node_center(nodes[nd['name']])[0],
+						get_node_center(nodes[nd['name']])[1],
+						nd['name']).attr({'text-size': 6}).rotate(90);
 
-	path_name = nd['paernt'] + "_" + nd['name'];
-	path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
-	    "L" + get_node_center_str(nodes[nd['name']]);
-	paths[path_name] = paper.path(path_str).attr({
-	    'stroke': '#4f81bd'
-	});
-	make_subtree(data, nodes[nd['name']], nd['name']);
+				path_name = nd['paernt'] + "_" + nd['name'];
+				path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
+						"L" + get_node_center_str(nodes[nd['name']]);
+				paths[path_name] = paper.path(path_str).attr({
+						'stroke': colors['gray']
+				});
+				make_subtree(data, nodes[nd['name']], nd['name']);
     }
     for (var key in nodes) {
-	nodes[key].toFront();
+				nodes[key].toFront();
     }
     for (var key in texts) {
-	texts[key].toFront();
+				texts[key].toFront();
     }
 }
 
@@ -170,48 +178,48 @@ function show_traffic_each(i) {
 
 function draw_bubble(data) {
     for (var i=0; i < data.length; i++ ) {
-	nd_name = data[i]['nwk_name'];
-	nd = nodes[nd_name];
-	if (bubbles[nd_name] == null) {
-	bubbles[nd_name] = paper.circle(get_node_center(nd)[0],
-					get_node_center(nd)[1],
-					data[i]['nw_usage_bits'] * 1e-7).attr({
-					    'fill': '#aaaaaa',
-					    'fill-opacity': 0.5,
-					    'stroke': '#aaaaaa'
-					});
-	} else {
-	    bubbles[nd_name].attr({r: data[i]['nw_usage_bits']*1e-7});
-	}
+				nd_name = data[i]['nwk_name'];
+				nd = nodes[nd_name];
+				if (bubbles[nd_name] == null) {
+						bubbles[nd_name] = paper.circle(get_node_center(nd)[0],
+																						get_node_center(nd)[1],
+																						data[i]['nw_usage_bits'] * 1e-7).attr({
+																								'fill': colors['bs-primary'],
+																								'fill-opacity': 0.5,
+																								'stroke': colors['bs-primary']
+																						});
+				} else {
+						bubbles[nd_name].attr({r: data[i]['nw_usage_bits']*1e-7});
+				}
     }
 }
 
 function make_subtree(data, p_node, p_name) {
     var p_layer = data[p_name]['layer'];
     for (var i = 0; i < data[p_name]['children'].length; i++) {
-	var nd_name = data[p_name]['children'][i];
-	var nx = p_node.attr().x - span_nodes[p_layer]/2 + 
-	    span_nodes[p_layer + 1] * (i+1);
-	var ny = vert_span_nodes/2 + vert_span_nodes * (p_layer + 1);
-	nodes[nd_name] = paper.rect(nx, ny,
-				    span_nodes[p_layer+1]/2,
-				    span_nodes[p_layer+1]/2,1).attr({
-					'fill': '#4f81bd',
-					'stroke': '#dcd6f2',
-					'stroke-width': 0.5
-				    });
-	texts[nd_name] = paper.text(
-	    get_node_center(nodes[nd_name])[0],
-	    get_node_center(nodes[nd_name])[1],
-	    nd_name).attr({'text-size': 6}).rotate(90);
+				var nd_name = data[p_name]['children'][i];
+				var nx = p_node.attr().x - span_nodes[p_layer]/2 + 
+						span_nodes[p_layer + 1] * (i+1);
+				var ny = vert_span_nodes/2 + vert_span_nodes * (p_layer + 1);
+				nodes[nd_name] = paper.rect(nx, ny,
+																		span_nodes[p_layer+1]/2,
+																		span_nodes[p_layer+1]/2,1).attr({
+																				'fill': colors['gray-light'],
+																				'stroke': colors['gray-light'],
+																				'stroke-width': 0.5
+																		});
+				texts[nd_name] = paper.text(
+						get_node_center(nodes[nd_name])[0],
+						get_node_center(nodes[nd_name])[1],
+						nd_name).attr({'text-size': 6}).rotate(90);
 
-	path_name = p_name + "_" + nd_name;
-	path_str = "M" + get_node_center_str(nodes[p_name]) +
-	    "L" + get_node_center_str(nodes[nd_name]);
-	paths[path_name] = paper.path(path_str).attr({
-	    'stroke': '#4f81bd'
-	});
-	make_subtree(data, nodes[nd_name], nd_name);
+				path_name = p_name + "_" + nd_name;
+				path_str = "M" + get_node_center_str(nodes[p_name]) +
+						"L" + get_node_center_str(nodes[nd_name]);
+				paths[path_name] = paper.path(path_str).attr({
+						'stroke': colors['gray']
+				});
+				make_subtree(data, nodes[nd_name], nd_name);
     }
 }
 
