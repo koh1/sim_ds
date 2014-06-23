@@ -54,22 +54,20 @@
       <div class="row">
 	<div class="col-md-12">
 	  <div class="page-header">
-	    <h1>Traffic transition</h1>
+	    <h1>Traffic transition Viewer</h1>
 	  </div>
 	</div>
       </div>
       <div class="row">
 	<div class="col-md-12">
 	  <form class="form-inline" role="form">
-	    <button type="button" onclick="show_traffic()" class="btn btn-primary">Start</button>
-	    <button type="button" onclick="load_sim_parms()" class="btn btn-primary">Load</button>
 	    <div class="form-group">
 	      <label class="sr-only" for="db_host">DB Host</label>
-	      <input type="text" class="form-control" id="db_host" placeholder="DB Host"></input>
+	      <input type="text" value="10.25.165.86" class="form-control" id="db_host" placeholder="DB Host" readonly></input>
 	    </div>
 	    <div class="form-group">
 	      <label class="sr-only" for="db_port">DB Port</label>
-	      <input type="text" class="form-control" id="db_port" placeholder="DB Port"></input>
+	      <input type="text" class="form-control" id="db_port" placeholder="DB Port" value=27017 readonly></input>
 	    </div>
 	    <div class="form-group">
 	      <label class="sr-only" for="db_name">DB Name</label>
@@ -85,6 +83,26 @@
       <div class="row">
 	<div class="col-md-12">
 	  <div id="canvas"></div>
+	</div>
+      </div><!-- /.row -->
+      <div class="row">
+	<div class="col-md-12">
+	  <form class="form-inline" role="form">
+	    <button type="button" onclick="show_traffic()" class="btn btn-primary">Start</button>
+	    <button type="button" onclick="show_avg_traffic()" id="show_avg_btn" class="btn btn-primary" disabled>AVG</button>
+	    <div class="form-group">
+	      <label class="sr-only" for="start_time">Start Time</label>
+	      <input type="text" class="form-control" id="start_time" placeholder="Start Time (step number)"></input>
+	    </div>
+	    <div class="form-group">
+	      <label class="sr-only" for="step_width">Step Width</label>
+	      <input type="text" class="form-control" id="step_width" placeholder="Step Width"></input>
+	    </div>
+	    <div class="form-group">
+	      <label class="sr-only" for="num_of_steps">Number of Steps</label>
+	      <input type="text" class="form-control" id="num_of_steps" placeholder="Number of Steps"></input>
+	    </div>
+	  </form>
 	</div>
       </div><!-- /.row -->
       <div class="row">

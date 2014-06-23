@@ -14,16 +14,24 @@ var colors = {
     'gray': "#555",
     'gray-light': "#999",
     'gray-lighter': "#eee",
-		'bs-primary': "#428bca",
-		'bs-success': "#5cb85c",
-		'bs-info': "#5bc0de",
-		'bs-warning': "#f0ad4e",
-		'bs-danger': "#d9534f"
+    'bs-primary': "#428bca",
+    'bs-success': "#5cb85c",
+    'bs-info': "#5bc0de",
+    'bs-warning': "#f0ad4e",
+    'bs-danger': "#d9534f"
 };
 
 var nodes_per_layer;
 var span_nodes;
 var vert_span_nodes;
+
+var traffic_avg;
+var traffic_text;
+var db_name;
+var coll;
+var start_time;
+var step_width;
+
 
 $(function() {
     paper = Raphael("canvas", width, height);
@@ -31,6 +39,8 @@ $(function() {
     paths = {};
     texts = {};
     bubbles = {};
+    traffic_avg = {};
+    traffic_text = {};
     $.ajax({
 	type: 'GET',
 	url: '/static/data/topo2.json',
@@ -79,64 +89,64 @@ function make_topology(data) {
 							  'stroke-width': 0.5
 						      });
     texts[nodes_per_layer[0][0]['name']] = paper.text(
-				get_node_center(nodes[nodes_per_layer[0][0]['name']])[0],
-				get_node_center(nodes[nodes_per_layer[0][0]['name']])[1],
-				nodes_per_layer[0][0]['name']).rotate(90);
+	get_node_center(nodes[nodes_per_layer[0][0]['name']])[0],
+	get_node_center(nodes[nodes_per_layer[0][0]['name']])[1],
+	nodes_per_layer[0][0]['name']).rotate(90);
     // place layer 1 nodes
     for (var i=0; i < nodes_per_layer[1].length; i++) {
-				var nd = nodes_per_layer[1][i];
-				var nx = span_nodes[1] * (i+1);
-				var ny = vert_span_nodes/2 + vert_span_nodes * 1;
-				nodes[nd['name']] = paper.rect(nx, ny,
-																			 20,
-																			 20,1).attr({
-																					 'fill': colors['gray-light'],
-																					 'stroke': colors['gray-light'],
-																					 'stroke-width': 0.5
-																			 });
-				texts[nd['name']] = paper.text(
-						get_node_center(nodes[nd['name']])[0],
-						get_node_center(nodes[nd['name']])[1],
-						nd['name']).rotate(90);
+	var nd = nodes_per_layer[1][i];
+	var nx = span_nodes[1] * (i+1);
+	var ny = vert_span_nodes/2 + vert_span_nodes * 1;
+	nodes[nd['name']] = paper.rect(nx, ny,
+				       20,
+				       20,1).attr({
+					   'fill': colors['gray-light'],
+					   'stroke': colors['gray-light'],
+					   'stroke-width': 0.5
+				       });
+	texts[nd['name']] = paper.text(
+	    get_node_center(nodes[nd['name']])[0],
+	    get_node_center(nodes[nd['name']])[1],
+	    nd['name']).rotate(90);
 	
-				if (nd['parent'] != "") {
-						path_name = nd['paernt'] + "_" + nd['name'];
-						path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
-								"L" + get_node_center_str(nodes[nd['name']]);
-						paths[path_name] = paper.path(path_str).attr({
-								'stroke': colors['gray']
-						});
-				}
+	if (nd['parent'] != "") {
+	    path_name = nd['paernt'] + "_" + nd['name'];
+	    path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
+		"L" + get_node_center_str(nodes[nd['name']]);
+	    paths[path_name] = paper.path(path_str).attr({
+		'stroke': colors['gray']
+	    });
+	}
     }
     for (var i=0; i < nodes_per_layer[2].length; i++) {
-				var nd = nodes_per_layer[2][i];
-				var nx = span_nodes[2] * (i+1) - 10;
-				var ny = vert_span_nodes/2 + vert_span_nodes * 2;
-				nodes[nd['name']] = paper.rect(nx, ny,
-																			 20,
-																			 20,1).attr({
-																					 'fill': colors['gray-light'],
-																					 'stroke': colors['gray-light'],
-																					 'stroke-width': 0.5
-																			 });
-				texts[nd['name']] = paper.text(
-						get_node_center(nodes[nd['name']])[0],
-						get_node_center(nodes[nd['name']])[1],
-						nd['name']).attr({'text-size': 6}).rotate(90);
+	var nd = nodes_per_layer[2][i];
+	var nx = span_nodes[2] * (i+1) - 10;
+	var ny = vert_span_nodes/2 + vert_span_nodes * 2;
+	nodes[nd['name']] = paper.rect(nx, ny,
+				       20,
+				       20,1).attr({
+					   'fill': colors['gray-light'],
+					   'stroke': colors['gray-light'],
+					   'stroke-width': 0.5
+				       });
+	texts[nd['name']] = paper.text(
+	    get_node_center(nodes[nd['name']])[0],
+	    get_node_center(nodes[nd['name']])[1],
+	    nd['name']).attr({'text-size': 6}).rotate(90);
 
-				path_name = nd['paernt'] + "_" + nd['name'];
-				path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
-						"L" + get_node_center_str(nodes[nd['name']]);
-				paths[path_name] = paper.path(path_str).attr({
-						'stroke': colors['gray']
-				});
-				make_subtree(data, nodes[nd['name']], nd['name']);
+	path_name = nd['paernt'] + "_" + nd['name'];
+	path_str = "M" + get_node_center_str(nodes[nd['parent']]) +
+	    "L" + get_node_center_str(nodes[nd['name']]);
+	paths[path_name] = paper.path(path_str).attr({
+	    'stroke': colors['gray']
+	});
+	make_subtree(data, nodes[nd['name']], nd['name']);
     }
     for (var key in nodes) {
-				nodes[key].toFront();
+	nodes[key].toFront();
     }
     for (var key in texts) {
-				texts[key].toFront();
+	texts[key].toFront();
     }
 }
 
@@ -145,24 +155,50 @@ function sleep(time, callback, param) {
 }
 
 function show_traffic() {
+    traffic_avg = {};
+    db_name = $("#db_name").val();
+    coll = $("#db_coll").val();
+    start_time = parseInt($("#start_time").val());
+    step_width = parseInt($("#step_width").val());
+    if (db_name == "" || coll == "") {
+	alert('Input DB name and Collection Name');
+	return;
+    }
     for (var key in texts) {
 	texts[key].hide();
     }
-    for (var i = 0; i < 100; i++) {
-	sleep(10, show_traffic_each, i);
+    for (var i = 0; i < parseInt($("#num_of_steps").val()); i++) {
+	sleep(100, show_traffic_each, i);
     }
-/*
+    /*
     for (var key in texts) {
 	texts[key].show();
 	texts[key].toFront();
     }
-*/
+    */
+    $("#show_avg_btn").attr('disabled', false);
+}
+
+function show_avg_traffic() {
+    for (var key in traffic_avg) {
+	var avg = traffic_avg[key] / 1000000.0;
+	if (avg < 1) {
+	    avg = 0.0;
+	}
+//	avg_split = avg.toString().split(".");
+//	avg_str = avg_split[0] + avg_split[1].substring(0,2);
+	traffic_text[key] = paper.text(
+	    get_node_center(nodes[key])[0],
+	    get_node_center(nodes[key])[1],
+	    avg.toString().substring(0,5)).attr({'text-size': 4}).rotate(90);
+	bubbles[key].attr({
+	    r: traffic_avg[key]*5e-7
+	});
+    }
 }
 
 function show_traffic_each(i) {
-    var db_name = 'test';
-    var coll = 'coop_test_20140620143531_nwk';
-    var t = i * 10 + 100;
+    var t = i * step_width + start_time;
     var urlstr = "get_nwk_traffic/" + db_name + "/" + coll + "/" + t + "/";
     $.ajax({
 	async: false,
@@ -178,48 +214,50 @@ function show_traffic_each(i) {
 
 function draw_bubble(data) {
     for (var i=0; i < data.length; i++ ) {
-				nd_name = data[i]['nwk_name'];
-				nd = nodes[nd_name];
-				if (bubbles[nd_name] == null) {
-						bubbles[nd_name] = paper.circle(get_node_center(nd)[0],
-																						get_node_center(nd)[1],
-																						data[i]['nw_usage_bits'] * 1e-7).attr({
-																								'fill': colors['bs-primary'],
-																								'fill-opacity': 0.5,
-																								'stroke': colors['bs-primary']
-																						});
-				} else {
-						bubbles[nd_name].attr({r: data[i]['nw_usage_bits']*1e-7});
-				}
+	nd_name = data[i]['nwk_name'];
+	nd = nodes[nd_name];
+	if (bubbles[nd_name] == null) {
+	    bubbles[nd_name] = paper.circle(get_node_center(nd)[0],
+					    get_node_center(nd)[1],
+					    data[i]['nw_usage_bits'] * 1e-7).attr({
+						'fill': colors['bs-primary'],
+						'fill-opacity': 0.8,
+						'stroke': colors['bs-primary']
+					    });
+	    traffic_avg[nd_name] = data[i]['nw_usage_bits'];
+	} else {
+	    bubbles[nd_name].attr({r: data[i]['nw_usage_bits']*1e-7});
+	    traffic_avg[nd_name] = (traffic_avg[nd_name] + data[i]['nw_usage_bits'])/2;
+	}
     }
 }
 
 function make_subtree(data, p_node, p_name) {
     var p_layer = data[p_name]['layer'];
     for (var i = 0; i < data[p_name]['children'].length; i++) {
-				var nd_name = data[p_name]['children'][i];
-				var nx = p_node.attr().x - span_nodes[p_layer]/2 + 
-						span_nodes[p_layer + 1] * (i+1);
-				var ny = vert_span_nodes/2 + vert_span_nodes * (p_layer + 1);
-				nodes[nd_name] = paper.rect(nx, ny,
-																		span_nodes[p_layer+1]/2,
-																		span_nodes[p_layer+1]/2,1).attr({
-																				'fill': colors['gray-light'],
-																				'stroke': colors['gray-light'],
-																				'stroke-width': 0.5
-																		});
-				texts[nd_name] = paper.text(
-						get_node_center(nodes[nd_name])[0],
-						get_node_center(nodes[nd_name])[1],
-						nd_name).attr({'text-size': 6}).rotate(90);
+	var nd_name = data[p_name]['children'][i];
+	var nx = p_node.attr().x - span_nodes[p_layer]/2 + 
+	    span_nodes[p_layer + 1] * (i+1);
+	var ny = vert_span_nodes/2 + vert_span_nodes * (p_layer + 1);
+	nodes[nd_name] = paper.rect(nx, ny,
+				    span_nodes[p_layer+1]/2,
+				    span_nodes[p_layer+1]/2,1).attr({
+					'fill': colors['gray-light'],
+					'stroke': colors['gray-light'],
+					'stroke-width': 0.5
+				    });
+	texts[nd_name] = paper.text(
+	    get_node_center(nodes[nd_name])[0],
+	    get_node_center(nodes[nd_name])[1],
+	    nd_name).attr({'text-size': 6}).rotate(90);
 
-				path_name = p_name + "_" + nd_name;
-				path_str = "M" + get_node_center_str(nodes[p_name]) +
-						"L" + get_node_center_str(nodes[nd_name]);
-				paths[path_name] = paper.path(path_str).attr({
-						'stroke': colors['gray']
-				});
-				make_subtree(data, nodes[nd_name], nd_name);
+	path_name = p_name + "_" + nd_name;
+	path_str = "M" + get_node_center_str(nodes[p_name]) +
+	    "L" + get_node_center_str(nodes[nd_name]);
+	paths[path_name] = paper.path(path_str).attr({
+	    'stroke': colors['gray']
+	});
+	make_subtree(data, nodes[nd_name], nd_name);
     }
 }
 
