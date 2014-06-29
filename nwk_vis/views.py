@@ -23,3 +23,11 @@ def get_nwk_traffic(request, db_name, coll_name, time):
         data.append(row)
 
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+def get_topology_data(request, db_name, coll_name):
+    db = pymongo.Connection('localhost', 27017)[db_name]
+    topo_coll = db[coll_name]
+    data = list(topo_coll.find())[0]
+    
+    
