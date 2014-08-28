@@ -181,7 +181,10 @@ function show_traffic() {
 
 function show_avg_traffic() {
     for (var key in traffic_avg) {
-	var avg = traffic_avg[key] / 1000000.0;
+	var step_width_ms = parseInt($("#step_width").val());
+	var num_of_steps = parseInt($("#num_of_steps").val());
+	var span_sec = step_width_ms * num_of_steps / 1000;
+	var avg = traffic_avg[key] / span_sec / 1000000.0; // Gbit
 	if (avg < 1) {
 	    avg = 0.0;
 	}
@@ -190,9 +193,9 @@ function show_avg_traffic() {
 	traffic_text[key] = paper.text(
 	    get_node_center(nodes[key])[0],
 	    get_node_center(nodes[key])[1],
-	    avg.toString().substring(0,5)).attr({'text-size': 4}).rotate(90);
+	    avg.toString().substring(0,7)).attr({'text-size': 4}).rotate(90);
 	bubbles[key].attr({
-	    r: traffic_avg[key]*5e-7
+	    r: traffic_avg[key]*1e-10
 	});
     }
 }
@@ -227,7 +230,8 @@ function draw_bubble(data) {
 	    traffic_avg[nd_name] = data[i]['nw_usage_bits'];
 	} else {
 	    bubbles[nd_name].attr({r: data[i]['nw_usage_bits']*1e-7});
-	    traffic_avg[nd_name] = (traffic_avg[nd_name] + data[i]['nw_usage_bits'])/2;
+//	    traffic_avg[nd_name] = (traffic_avg[nd_name] + data[i]['nw_usage_bits'])/2;
+	    traffic_avg[nd_name] += data[i]['nw_usage_bits'];
 	}
     }
 }

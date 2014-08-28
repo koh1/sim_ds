@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nwk_vis',
+    'result_manager',
 )
 
 MIDDLEWARE_CLASSES = (
