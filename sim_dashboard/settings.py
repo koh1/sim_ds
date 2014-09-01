@@ -80,6 +80,51 @@ USE_L10N = True
 USE_TZ = True
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+            },
+        'verysimple': {
+            'format': '%(message)s'
+            },
+        },
+    'filters': {
+        },
+    'handlers': {
+        'to_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'log/application.log',
+            'formatter': 'verbose',
+            },
+        'to_ctrl_file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': 'log/ctrl.log',
+                'formatter': 'verysimple',
+                },
+        },    
+    'loggers': {
+        'application': {
+            'handlers': ['to_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+            },
+        'raw': {
+            'handlers': ['to_ctrl_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+            },
+        }
+    }
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
