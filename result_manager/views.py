@@ -22,16 +22,26 @@ def index(request):
 
 def search_results(request):
     search_key = request.POST['search_key']
-    json_str = ""
+    res_data = []
     if search_key != "":
         logger.info(request.POST['search_key'])
         entries = SimulationResult.objects.filter(name__icontains=search_key)
-#        for e in entries:
-#            mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
-#            e = mdb.host
-#            e.db_port = mdb.port
+        for e in entries:
+            mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
 
-        json_str = serializers.serialize('json', entries)
+
+            res = {
+                "name": e.name,
+                "sim_id": e.sim_id,
+                "db_host": mdb.host,
+                "db_port": mdb.port,
+                "db_name": e.db_name
+                }
+            res_data.append(res)
+
+        logger.info("%s" % res_data)
+#        json_str = serializers.serialize('json', entries)
+        json_str = json.dumps(res_data)
         
     else:
         json_str = json.dumps([])

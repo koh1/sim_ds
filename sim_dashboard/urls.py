@@ -13,6 +13,12 @@ urlpatterns = patterns('',
     url(r'^nwk_vis/$', 'nwk_vis.views.index'),
     url(r'^nwk_vis/get_nwk_traffic/(?P<db_name>\w+)/(?P<coll_name>\w+)/(?P<time>\d+)/$', 'nwk_vis.views.get_nwk_traffic'),
     url(r'^search_results/$', 'result_manager.views.search_results'),
+    url(r'^analyzer/(?P<sim_id>\w+)/$', 'analyzer.views.index'),
+    url(r'^analyzer/analyze/(?P<sim_id>\w+)/$', 'analyzer.views.analyze_index'),
+    url(r'^get_nwk_chart_data/$', 'analyzer.views.get_nwk_chart_data'),
+    url(r'^analyzer/network/(?P<sim_id>\w+)/$', 'analyzer.views.nwk_index'),
+    url(r'^analyzer/message/(?P<sim_id>\w+)/$', 'analyzer.views.msg_index'),
+    url(r'^analyzer/node/(?P<sim_id>\w+)/$', 'analyzer.views.nd_index'),
     url(r'^admin/', include(admin.site.urls)),
 )
 

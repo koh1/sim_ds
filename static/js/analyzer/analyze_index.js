@@ -28,35 +28,34 @@ $.ajaxSetup({
 });
 
 
-
-function search_results() {
-    var key = $("#results_search_in").val();
+function show_nwk_chart() {
+    var urlstr = "/get_nwk_chart_data/";
     $.ajax({
-	async: false,
+	async: true,
 	type: 'post',
-	url: "/search_results/",
+	url: urlstr,
 	data: {
-	    'search_key': key,
+	    'sim_id': $("#sim_id").text(),
+	    'x': 'time',
+	    'y': 'nw_usage',
+	    'nwk_name': 'edge_nwk'
 	},
 	success: function(data) {
-	    show_search_results(data);
+	    draw_nwk_chart(data);
 	}
     });
 }
 
-function show_search_results(data) {
-    $("#search_results_table").empty();
-    str = ""
-    for (var i=0; i < data.length; i++) {
-	str += "<tr><td id='" + i + "_name'>" + data[i].name + 
-	    "</td><td id='" + i + "_db_host'>" + data[i].db_host + 
-	    "</td><td id='" + i + "_db_port'>" + data[i].db_port +
-	    "</td><td id='" + i + "_db_name'>" + data[i].db_name +
-	    "</td><td id='" + i + "_sim_id'>" + data[i].sim_id + 
-	    "</td><td>" + 
-	    "<button class='btn btn-primary' onclick='location.href=\"/analyzer/" + data[i].sim_id + "/\"'>analyze</button></td></tr>";
-//	    "<button class='btn btn-primary' onclick='/analyzer/" + data[i].sim_id + "/'>select</button></td></tr>";
-    }
-    $("#search_results_table").append(str);
+function draw_nwk_chart(data) {
+    alert(data);
+//    var chart = c3.generate({
+//	bindto: '#nwk_chart',
+//	data: {
+//            columns: data
+//	}
+//    });
 }
 
+function add_series() {
+    
+}
