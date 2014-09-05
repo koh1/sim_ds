@@ -7,6 +7,12 @@ import matplotlib as mpl
 mpl.use('Agg')
 import pylab
 
+
+def show_plot(xdf, ydf, path):
+    fig, ax = mpl.pyplot.subplots()
+    ax.plot(xdf, ydf)
+    mpl.pyplot.savefig(path)
+
 def show_bar(df):
     width = 1
     ind = np.arange(len(df))

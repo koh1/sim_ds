@@ -8,7 +8,7 @@
     <meta name="author" content="">
 <!--    <link rel="shortcut icon" href="assets/ico/favicon.ico"> ==>
 
-    <title>Simulation Result Manager</title>
+    <title>Simulation Result Analyzer</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ STATIC_URL }}bs/css/bootstrap.min.css" rel="stylesheet">
@@ -37,14 +37,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Simulation Result Manager</a>
+          <a class="navbar-brand" href="#">Simulation Result Analyzer</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
 	    <li class="disabled"><a href="#">Viewer</a></li>
             <li><a href="/analyzer/">Analyzer</a></li>
-            <li><a href="/series_manager/">Series Manager</a></li>
+            <li class="active"><a href="/series_manager/">Series Manager</a></li>
             <li><a href="#">Execution</a></li>
             <li><a href="#">Register</a></li>
           </ul>
@@ -53,22 +53,34 @@
     </div>
 
     <div class="container">
-      <br />
       <div class="row">
 	<div class="col-md-12">
-	    <input type="text" class="form-control" placeholder="input search keyword" id="results_search_in" onkeyup="search_results()">
+	  <h4><span class="label label-default">Add New Series</span></h4>
+	  <div class="radio">
+	    <label>
+	      <input type="radio" name="how_to_make_series" id="optionsRadios1" value="1" onclick="make_series_add_form(this)" checked> From Query
+	      
+	    </label>
+	  </div>
+	  <div class="radio">
+	    <label>
+	      <input type="radio" name="how_to_make_series" id="optionsRadios2" value="2" onclick="make_series_add_form(this)">
+	      From Series
+	    </label>
+	  </div>
+	  <div class="radio">
+	    <label>
+	      <input type="radio" name="how_to_make_series" id="optionsRadios3" value="3" onclick="make_series_add_form(this)">
+	      Raw Input
+	    </label>
+	  </div>
+	  <span id="series_add_form"></span>
 	</div>
-      </div>
-      <br />
+      </div><!-- /.row -->
       <div class="row">
 	<div class="col-md-12">
-	  <table class="table">
-	    <thead>
-	      <tr><th>name</th><th>DB Host</th><th>DB Port</th><th>DB Name</th><th>SIM ID</th><th></th></tr>
-	    </thead>
-	    <tbody id="search_results_table">
-	    </tbody>
-	  </table>
+	  <h4><span class="label label-default">Series</span></h4>
+	  <span id="series_table"></span>
 	</div>
       </div><!-- /.row -->
     </div><!-- /.container -->
@@ -79,9 +91,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
 
     <script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
-    <script src="{{ STATIC_URL }}js/raphael-min.js"></script>
-    <script src="{{ STATIC_URL }}js/result_manager/index.js"></script>
     <script src="{{ STATIC_URL }}bs/js/bootstrap.min.js"></script>
-
+    <script src="{{ STATIC_URL }}js/series_manager/index.js"></script>
   </body>
 </html>

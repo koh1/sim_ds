@@ -54,7 +54,9 @@ function show_search_results(data) {
 	    "</td><td id='" + i + "_db_name'>" + data[i].db_name +
 	    "</td><td id='" + i + "_sim_id'>" + data[i].sim_id + 
 	    "</td><td>" + 
-	    "<button class='btn btn-primary' onclick='location.href=\"/analyzer/" + data[i].sim_id + "/\"'>analyze</button></td></tr>";
+	    "<button class='btn btn-primary' onclick='location.href=\"/result_viewer/" + data[i].sim_id + "/\"'>View</button>" + 
+	    "</td><td></tr>";
+
 //	    "<button class='btn btn-primary' onclick='/analyzer/" + data[i].sim_id + "/'>select</button></td></tr>";
     }
     $("#search_results_table").append(str);

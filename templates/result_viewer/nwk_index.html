@@ -8,13 +8,14 @@
     <meta name="author" content="">
 <!--    <link rel="shortcut icon" href="assets/ico/favicon.ico"> ==>
 
-    <title>Simulation Result Manager</title>
+    <title>Simulation Result Analyzer</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ STATIC_URL }}bs/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="{{ STATIC_URL }}css/starter-template.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/c3.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -37,38 +38,51 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Simulation Result Manager</a>
+          <a class="navbar-brand" href="#">Simulation Result Analyzer</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-	    <li class="disabled"><a href="#">Viewer</a></li>
+            <li><a href="/">Home</a></li>
+	    <li class="active"><a href="/result_viewer/{{ sim_id }}">Viewer</a></li>
             <li><a href="/analyzer/">Analyzer</a></li>
             <li><a href="/series_manager/">Series Manager</a></li>
             <li><a href="#">Execution</a></li>
             <li><a href="#">Register</a></li>
+
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
     <div class="container">
+      <h4><span id="sim_id" class="label label-primary">{{ sim_id }}</span></h4>
       <br />
       <div class="row">
-	<div class="col-md-12">
-	    <input type="text" class="form-control" placeholder="input search keyword" id="results_search_in" onkeyup="search_results()">
+	<ul class="nav nav-tabs" role="tablist">
+	  <li><a href="/result_viewer/{{ sim_id }}">Overview</a></li>
+	  <li class="active"><a href="/result_viewer/network/{{ sim_id }}">Network</a></li>
+	  <li><a href="/result_viewer/node/{{ sim_id }}">Node</a></li>
+	  <li><a href="/result_viewer/message/{{ sim_id }}">Message</a></li>
+	</ul>
+	<div class="col-md-7">
+	  <br />
+	  <div id="nwk_chart"></div>
+	  <br />
+	  
 	</div>
-      </div>
-      <br />
-      <div class="row">
-	<div class="col-md-12">
-	  <table class="table">
-	    <thead>
-	      <tr><th>name</th><th>DB Host</th><th>DB Port</th><th>DB Name</th><th>SIM ID</th><th></th></tr>
-	    </thead>
-	    <tbody id="search_results_table">
-	    </tbody>
-	  </table>
+	<div class="col-md-5">
+	  <div class="row">
+	    <h4><span class="label label-default">Log Columns and Sample Data</span></h4>
+	    <div class="table-responsive">
+	      <table class="table table-condensed">
+		<tr>
+		  {% for k,v in nwk_log.0.items %}
+		<tr><th>{{ k }}</th><td>{{ v }}</td>
+		  {% endfor %} 
+		</tr>
+	      </table>
+	    </div>
+	  </div><!-- /.row -->
 	</div>
       </div><!-- /.row -->
     </div><!-- /.container -->
@@ -79,9 +93,11 @@
     <!-- Placed at the end of the document so the pages load faster -->
 
     <script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
-    <script src="{{ STATIC_URL }}js/raphael-min.js"></script>
-    <script src="{{ STATIC_URL }}js/result_manager/index.js"></script>
     <script src="{{ STATIC_URL }}bs/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/d3.min.js"></script>
+    <script src="{{ STATIC_URL }}js/c3.min.js"></script>
+    <script src="{{ STATIC_URL }}js/result_viewer/nwk_index.js"></script>
+    
 
   </body>
 </html>

@@ -42,7 +42,9 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li class="active"><a href="/analyzer/{{ sim_id }}">Analyzer</a></li>
+	    <li class="disabled"><a href="#">Viewer</a></li>
+            <li class="active"><a href="/analyzer/">Analyzer</a></li>
+            <li><a href="/series_manager/">Series Manager</a></li>
             <li><a href="#">Execution</a></li>
             <li><a href="#">Register</a></li>
           </ul>
@@ -51,54 +53,12 @@
     </div>
 
     <div class="container">
-      <h4><span class="label label-primary">{{ sim_id }}</span></h4>
-      <br />
       <div class="row">
-	<ul class="nav nav-tabs" role="tablist">
-	  <li class="active"><a href="#">Overview</a></li>
-	  <li><a href="/analyzer/analyze/{{ sim_id }}">Analyze</a></li>
-	  <li><a href="/analyzer/network/{{ sim_id }}">Network</a></li>
-	  <li><a href="/analyzer/node/{{ sim_id }}">Node</a></li>
-	  <li><a href="/analyzer/message/{{ sim_id }}">Message</a></li>
-	</ul>
-	<br />
-
-	<div class="col-md-7">
-	  <h4><span class="label label-default">Network Log Sample</span></h4>
-	  <div class="table-responsive">
-	    <table class="table table-condensed">
-	      {% for k,v in nwk_log.0.items %}
-	      <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
-	      {% endfor %} 
-	    </table>
-	  </div>
-
-	  <h4><span class="label label-default">Message Log Sample</span></h4>
-	  <div class="table-responsive">
-	    <table class="table table-condensed">
-	      {% for k,v in msg_log.0.items %}
-	      <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
-	      {% endfor %} 
-	    </table>
-	  </div>
-	  <h4><span class="label label-default">Node Log Sample</span></h4>
-	  <div class="table-responsive">
-	    <table class="table table-condensed">
-	      {% for k,v in node_log.0.items %}
-	      <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
-	      {% endfor %} 
-	    </table>
-	  </div>
+	<div class="col-md-8">
+	  chart
 	</div>
-	<div class="col-md-5">
-	  <h4><span class="label label-default">Settings</span></h4>
-	  <div class="table-responsive">
-	    <table class="table table-condensed">
-	      {% for k,v in conf.items %}
-	      <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
-	      {% endfor %} 
-	    </table>
-	  </div>
+	<div class="col-md-4">
+	  series
 	</div>
       </div><!-- /.row -->
     </div><!-- /.container -->
