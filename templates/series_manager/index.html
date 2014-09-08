@@ -54,18 +54,24 @@
 
     <div class="container">
       <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-3">
 	  <h4><span class="label label-default">Add New Series</span></h4>
 	  <div class="radio">
 	    <label>
-	      <input type="radio" name="how_to_make_series" id="optionsRadios1" value="1" onclick="make_series_add_form(this)" checked> From Query
+	      <input type="radio" name="how_to_make_series" id="optionsRadios1" value="1" onclick="make_series_add_form(this)" checked> From MongoDB with Query
+	      
+	    </label>
+	  </div>
+	  <div class="radio">
+	    <label>
+	      <input type="radio" name="how_to_make_series" id="optionsRadios4" value="4" onclick="make_series_add_form(this)"> From Query with Statistic Processing
 	      
 	    </label>
 	  </div>
 	  <div class="radio">
 	    <label>
 	      <input type="radio" name="how_to_make_series" id="optionsRadios2" value="2" onclick="make_series_add_form(this)">
-	      From Series
+	      From Local Series
 	    </label>
 	  </div>
 	  <div class="radio">
@@ -76,9 +82,16 @@
 	  </div>
 	  <span id="series_add_form"></span>
 	</div>
-	<div class="col-md-8">
+	<div class="col-md-9">
 	  <h4><span class="label label-default">Series</span></h4>
-	  <span id="series_table"></span>
+	  <table class="table table-condensed">
+	    <thead>
+	    <tr><th>name</th><th>size (bytes)</th><th></th><th></th></tr>
+	    </thead>
+	    <tbody id="series_table_body"></tbody>
+	  </table>
+
+
 	</div>
       </div><!-- /.row -->
     </div><!-- /.container -->
