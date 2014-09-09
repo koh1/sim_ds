@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^result_viewer/message/(?P<sim_id>\w+)/$', 'result_viewer.views.msg_index'),
     url(r'^result_viewer/node/(?P<sim_id>\w+)/$', 'result_viewer.views.nd_index'),
     url(r'^series_manager/$', 'series_manager.views.index'),
+    url(r'^series_manager/get_series_from_mdb/$', 'series_manager.views.get_series_from_mdb'),
     url(r'^admin/', include(admin.site.urls)),
 )
 

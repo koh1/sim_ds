@@ -49,8 +49,7 @@ function show_series(k) {
 function make_series_add_form(e) {
     var elem_str = "";
     if (e.value == 1) {
-	elem_str = "<form role='form'>" +
-	    "<div class='form-group'>" +
+	elem_str = "<div class='form-group'>" +
 	    "<label for='series_name'>Name of this Series</label>" + 
 	    "<input type='text' class='form-control' id='series_name' placeholder='Input the name of this series.'>" +
 	    "</div>" +
@@ -71,8 +70,8 @@ function make_series_add_form(e) {
 	    "<label for='query'>Query</label>" +
 	    "<input type='text' id='query' class='form-control' placeholder='Input mongodb query using json.'>" +
 	    "</div>" +
-	    "<button type='submit' class='btn btn-primary' onclick='make_series_from_mdb()'>Submit</button>" +
-	    "</form>";
+	    "<button class='btn btn-primary' onclick='make_series_from_mdb()'>Submit</button>";
+
     } else if (e.value == 2) {
 	elem_str = "<div class='form-group'>" +
 	    "<label for='series_name'>Name of this Series</label>" + 
@@ -178,8 +177,6 @@ function search_results() {
 	}
     });
 }
-
-
 function make_select_options(data) {
     var opts_str = "";
 
@@ -197,16 +194,31 @@ function input_collection_name(e) {
 
 function make_series_from_mdb() {
     var series_name = "series_" + $("#series_name").val();
-    var query = JSON.parse($("#query"));
+    var query = JSON.parse($("#query").val());
     var sim_id = $("#search_results_select").val();
     var coll = $("#collection").val();
     data = {
+	"series_name": series_name,
 	"sim_id": sim_id,
 	"collection_name": coll,
-	"query": query
+	"query": JSON.stringify(query)
     };
-    alert(data);
+    $.ajax({
+	async: false,
+	type: 'post',
+	dataType: 'json',
+	url: "/series_manager/get_series_from_mdb/",
+	data: data,
+	success: function(data) {
+	    make_series_from_json(data);
+	}
+    });
 }
+function make_series_from_json(data) {
+    var json_series = JSON.parse(data['series']);
+    localStorage.setItem(data['series_name'], JSON.stringify(json_series));
+}
+
 
 function make_series_from_raw() {
     var series_name = "series_" + $("#series_name").val();
