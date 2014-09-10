@@ -68,7 +68,11 @@ function make_series_add_form(e) {
 	    "</div>" +
 	    "<div class='form-group'>" +
 	    "<label for='query'>Query</label>" +
-	    "<input type='text' id='query' class='form-control' placeholder='Input mongodb query using json.'>" +
+	    "<input type='text' id='query' class='form-control' placeholder='Input mongodb query with json format.'>" +
+	    "</div>" +
+	    "<div class='form-group'>" +
+	    "<label for='column_items'>Column Items</label>" +
+	    "<input type='text' id='column_items' class='form-control' placeholder='Input column items with json array format.'>" +
 	    "</div>" +
 	    "<button class='btn btn-primary' onclick='make_series_from_mdb()'>Submit</button>";
 
@@ -116,6 +120,10 @@ function make_series_add_form(e) {
 	    "<div class='form-group'>" +
 	    "<label for='query'>Query</label>" +
 	    "<input type='text' id='query' class='form-control' placeholder='Input mongodb query using json.'>" +
+	    "</div>" +
+	    "<div class='form-group'>" +
+	    "<label for='target_item'>Target Item</label>" +
+	    "<input type='text' id='target_items' class='form-control' placeholder='Input target column name.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
 	    "<label>Statistic Functions</label>" +
@@ -197,10 +205,12 @@ function make_series_from_mdb() {
     var query = JSON.parse($("#query").val());
     var sim_id = $("#search_results_select").val();
     var coll = $("#collection").val();
+    var column_items = JSON.parse($("#column_items").val());
     data = {
 	"series_name": series_name,
 	"sim_id": sim_id,
 	"collection_name": coll,
+	"column_items": JSON.stringify(column_items),
 	"query": JSON.stringify(query)
     };
     $.ajax({
@@ -215,8 +225,7 @@ function make_series_from_mdb() {
     });
 }
 function make_series_from_json(data) {
-    var json_series = JSON.parse(data['series']);
-    localStorage.setItem(data['series_name'], JSON.stringify(json_series));
+    localStorage.setItem(data['series_name'], JSON.stringify(data['series']));
 }
 
 
