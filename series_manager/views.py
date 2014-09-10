@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
+from series_manager.models import DataFrameDef
 
 import json
 import logging
@@ -52,8 +53,17 @@ def get_series_with_stats(request):
 
 def get_series_from_mdb(request):
     logger.info("---get_series_from_mdb---")
-    for k,v in request.POST.items():
-        logger.info("%s: %s" % (k, v))
+    dfd = DataFrameDef(
+        name = request.POST['series_name'],
+        sim_id = request.POST['sim_id'],
+        collection_name = request.POST['collection_name'],
+        query = request.POST['query'],
+        column_items = request.POST['column_items'],
+        if_hash = False,
+#        owner = request.user.id
+        )
+    
+    
     sim_id = request.POST['sim_id']
     series_name = request.POST['series_name']
     collection_name = request.POST['collection_name']
