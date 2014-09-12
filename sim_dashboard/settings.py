@@ -38,8 +38,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'nwk_vis',
     'result_manager',
+    'series_manager',
+    'result_viewer',
+    'analyzer',
+    'main',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,17 +64,26 @@ WSGI_APPLICATION = 'sim_dashboard.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sim_ds',
+        'USER': 'root',
+        'PASSWORD': 'svn123',
+        'HOST': '',
+        'PORT': '',
+        
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+#LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'utf=8'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -123,6 +135,10 @@ LOGGING = {
             },
         }
     }
+
+
+LOGIN_URL = "/account/login/"
+LOGIN_REDIRECT_URL = "/"
 
 
 # Static files (CSS, JavaScript, Images)

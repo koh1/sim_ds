@@ -28,6 +28,7 @@ $.ajaxSetup({
 });
 
 $(function() {
+/*
     elem_str = "";
     for (var key in localStorage) {
 	elem_str += "<tr><td>" + key + "</td>" +
@@ -37,6 +38,7 @@ $(function() {
     }
     $("#series_table_body").empty();
     $("#series_table_body").append(elem_str);
+*/
 });
 
 function delete_series(k) {
@@ -50,7 +52,7 @@ function make_series_add_form(e) {
     var elem_str = "";
     if (e.value == 1) {
 	elem_str = "<div class='form-group'>" +
-	    "<label for='series_name'>Name of this Series</label>" + 
+	    "<label for='series_name'>Name of this Series</label>" +
 	    "<input type='text' class='form-control' id='series_name' placeholder='Input the name of this series.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
@@ -58,13 +60,13 @@ function make_series_add_form(e) {
 	    "<input type='text' onkeyup='search_results()' class='form-control' id='search_keyword' placeholder='Input keyword.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
-	    "<label for='search_results_select'>Result Candidates</label>" +
-	    "<select class='form-control' onclick='input_collection_name(this)' id='search_results_select'>" +
+	    "<label for='sim_id'>Result Candidates</label>" +
+	    "<select class='form-control' onclick='input_collection_name(this)' id='sim_id'>" +
 	    "</select>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
-	    "<label for='collection'>Collection</label>" +
-	    "<input type='text' id='collection' class='form-control' placeholder='Input collection name.'>" +
+	    "<label for='collection_name'>Collection</label>" +
+	    "<input type='text' id='collection_name' class='form-control' placeholder='Input collection name.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
 	    "<label for='query'>Query</label>" +
@@ -73,35 +75,37 @@ function make_series_add_form(e) {
 	    "<div class='form-group'>" +
 	    "<label for='column_items'>Column Items</label>" +
 	    "<input type='text' id='column_items' class='form-control' placeholder='Input column items with json array format.'>" +
-	    "</div>" +
-	    "<button class='btn btn-primary' onclick='make_series_from_mdb()'>Submit</button>";
+	    "</div>" + 
+	    "<button onclick='make_df_from_mdb()' class='btn btn-primary'>Submit</button>";
+
 
     } else if (e.value == 2) {
 	elem_str = "<div class='form-group'>" +
-	    "<label for='series_name'>Name of this Series</label>" + 
+	    "<label for='series_name'>Name of this Series</label>" +
 	    "<input type='text' class='form-control' id='series_name' placeholder='Input the name of this series.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
-	    "<label for='local_series_array_json'>Local Series Array (JSON)</label>" + 
-	    "<input type='text' class='form-control' id='local_series_array_json' placeholder='Input Array of Local Series with JSON format.'>" +
-	    "</div>" +
-	    "<button type='submit' onclick='make_series_from_local()' class='btn btn-primary'>Submit</button>";
+	    "<label for='local_series_array_json'>How to make Data Frame (JSON)</label>" + 
+	    "<input type='text' class='form-control' id='how_to_make_df_json' placeholder='Input Array of Items with JSON format.'>" +
+	    "</div>" + 
+	    "<button onclick='make_df_from_dfs()' class='btn btn-primary'>Submit</button>";
+
 
     } else if (e.value == 3) {
 	elem_str = "<div class='form-group'>" +
-	    "<label for='series_name'>Name of this Series</label>" + 
+	    "<label for='series_name'>Name of this Series</label>" +
 	    "<input type='text' class='form-control' id='series_name' placeholder='Input the name of this series.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
 	    "<label for='raw_json_series'>Raw JSON Series</label>" + 
-	    "<input type='text' class='form-control' id='raw_json_series' placeholder='Input Series with JSON format.'>" +
-	    "</div>" +
-	    "<button type='submit' onclick='make_series_from_raw()' class='btn btn-primary'>Submit</button>";
+	    "<input type='text' class='form-control' id='raw_df' placeholder='Input Data Frame with JSON format.'>" +
+	    "</div>" + 
+	    "<button onclick='make_df_from_raw()' class='btn btn-primary'>Submit</button>";
+
 	
     } else if (e.value == 4) {
-	elem_str = "<form role='form' action='make_series_from_mdb()'>" +
-	    "<div class='form-group'>" +
-	    "<label for='series_name'>Name of this Series</label>" + 
+	elem_str = "<div class='form-group'>" +
+	    "<label for='series_name'>Name of this Series</label>" +
 	    "<input type='text' class='form-control' id='series_name' placeholder='Input the name of this series.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
@@ -109,13 +113,13 @@ function make_series_add_form(e) {
 	    "<input type='text' onkeyup='search_results()' class='form-control' id='search_keyword' placeholder='Input keyword.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
-	    "<label for='search_results_select'>Result Candidates</label>" +
-	    "<select class='form-control' onclick='input_collection_name(this)' id='search_results_select'>" +
+	    "<label for='sim_id'>Result Candidates</label>" +
+	    "<select class='form-control' onclick='input_collection_name(this)' id='sim_id'>" +
 	    "</select>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
-	    "<label for='collection'>Collection</label>" +
-	    "<input type='text' id='collection' class='form-control' placeholder='Input collection name.'>" +
+	    "<label for='collection_name'>Collection</label>" +
+	    "<input type='text' id='collection_name' class='form-control' placeholder='Input collection name.'>" +
 	    "</div>" +
 	    "<div class='form-group'>" +
 	    "<label for='query'>Query</label>" +
@@ -123,48 +127,10 @@ function make_series_add_form(e) {
 	    "</div>" +
 	    "<div class='form-group'>" +
 	    "<label for='target_item'>Target Item</label>" +
-	    "<input type='text' id='target_items' class='form-control' placeholder='Input target column name.'>" +
-	    "</div>" +
-	    "<div class='form-group'>" +
-	    "<label>Statistic Functions</label>" +
-	    "<div class='radio'>" + 
-	    "<label>" +
-	    "<input type='radio' name='statistic_funcs' id='statf_1' value='1' checked> Mean" +
-	    "</label>" +
+	    "<input type='text' id='target_item' class='form-control' placeholder='Input target column name.'>" +
 	    "</div>" + 
-	    "<div class='radio'>" + 
-	    "<label>" +
-	    "<input type='radio' name='statistic_funcs' id='statf_2' value='2'> Max" +
-	    "</label>" +
-	    "</div>" + 
-	    "<div class='radio'>" + 
-	    "<label>" +
-	    "<input type='radio' name='statistic_funcs' id='statf_3' value='3'> Min" +
-	    "</label>" +
-	    "</div>" + 
-	    "<div class='radio'>" + 
-	    "<label>" +
-	    "<input type='radio' name='statistic_funcs' id='statf_4' value='4'> Median" +
-	    "</label>" +
-	    "</div>" + 
-	    "<div class='radio'>" + 
-	    "<label>" +
-	    "<input type='radio' name='statistic_funcs' id='statf_5' value='5'> Standard Deviation" +
-	    "</label>" +
-	    "</div>" + 
-	    "<div class='radio'>" + 
-	    "<label>" +
-	    "<input type='radio' name='statistic_funcs' id='statf_6' value='6'> Rolling mean" +
-	    "</label>" +
-	    "</div>" + 
-	    "</div>" +
-	    "<div class='form-group'>" +
-	    "<label for='query'>Rolling Mean Span</label>" +
-	    "<input type='number' id='roll_mean_span' class='form-control'>" +
-	    "</div>" +
-	    "<button type='submit' class='btn btn-primary'>Submit</button>" +
-	    "</form>";
-	
+	    "<button onclick='make_df_from_mdb_ws()' class='btn btn-primary'>Submit</button>";
+
     }
     $("#series_add_form").empty();
     $("#series_add_form").append(elem_str);
@@ -192,19 +158,19 @@ function make_select_options(data) {
 	opts_str += "<option value='" + data[i].sim_id + "'>" + data[i].sim_id + "</option>";
     }
     
-    $("#search_results_select").empty();
-    $("#search_results_select").append(opts_str);
+    $("#sim_id").empty();
+    $("#sim_id").append(opts_str);
 }
 
 function input_collection_name(e) {
-    $("#collection").val(e.value);
+    $("#collection_name").val(e.value);
 }
 
-function make_series_from_mdb() {
-    var series_name = "series_" + $("#series_name").val();
+function make_df_from_mdb() {
+    var series_name = $("#series_name").val();
     var query = JSON.parse($("#query").val());
-    var sim_id = $("#search_results_select").val();
-    var coll = $("#collection").val();
+    var sim_id = $("#sim_id").val();
+    var coll = $("#collection_name").val();
     var column_items = JSON.parse($("#column_items").val());
     data = {
 	"series_name": series_name,
@@ -217,13 +183,26 @@ function make_series_from_mdb() {
 	async: false,
 	type: 'post',
 	dataType: 'json',
-	url: "/series_manager/get_series_from_mdb/",
+	url: "/series_manager/make_df_from_mdb/",
 	data: data,
 	success: function(data) {
-	    make_series_from_json(data);
+	    make_alert(data);
 	}
     });
 }
+
+function make_alert(data) {
+    $("#alert_region").empty();
+    var alert_str = "<div class='alert alert-info alert-dismissible' role='alert'>" +
+	"<button type='button' class='close' data-dismiss='alert'>" +
+	"<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>";
+    alert_str += "[" + data['status'] + "]" + data["message"];
+    alert_str += "</div>";
+    $("#alert_region").append(alert_str);
+
+    
+}
+
 function make_series_from_json(data) {
     localStorage.setItem(data['series_name'], JSON.stringify(data['series']));
 }

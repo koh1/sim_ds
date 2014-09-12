@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
+from main.models import Host
 import analyzer.plotter as plotter
+
 
 import json
 import logging
@@ -19,7 +21,8 @@ def index(request, sim_id):
     result = SimulationResult.objects.filter(sim_id=sim_id)
     if len(result) > 0:
         dbinfo = ResultSourceMongodb.objects.get(id=result[0].result_source_mongodb.id)
-        db = pymongo.Connection(dbinfo.host, dbinfo.port)[result[0].db_name]
+        dbhost = Host.objects.get(id=dbinfo.host.id)
+        db = pymongo.Connection(dbhost.ipaddr, int(dbinfo.port))[result[0].db_name]
 
         ## for older version
         confcoll = db['%s_config' % sim_id]
@@ -51,7 +54,7 @@ def nwk_index(request, sim_id):
     result = SimulationResult.objects.filter(sim_id=sim_id)
     if len(result) > 0:
         dbinfo = ResultSourceMongodb.objects.get(id=result[0].result_source_mongodb.id)
-        db = pymongo.Connection(dbinfo.host, dbinfo.port)[result[0].db_name]
+        db = pymongo.Connection(dbinfo.host, int(dbinfo.port))[result[0].db_name]
 
         ## for older version
         confcoll = db['%s_config' % sim_id]
@@ -85,15 +88,14 @@ def get_nwk_chart_img(request):
     result = SimulationResult.objects.filter(sim_id=sim_id)
     if len(result) > 0:
         dbinfo = ResultSourceMongodb.objects.get(id=result[0].result_source_mongodb.id)
-        db = pymongo.Connection(dbinfo.host, dbinfo.port)[result[0].db_name]
+        dbhost = Host.objects.get(id=dbinfo.host.id)
+        db = pymongo.Connection(dbhost, dbinfo.port)[result[0].db_name]
 
         ## for older version
         enwcoll = db["%s_edge_nwk" % sim_id]
         df = pd.DataFrame(list(enwcoll.find({"nwk_name": nwk_name})))
         plotter.show_plot(df['time'], df['nw_usage'], "plot.png")
         
-
-
 
 def get_nwk_chart_data(request):
     sim_id = request.POST['sim_id']

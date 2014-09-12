@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
+from main.models import Host
 
 import json
 import logging
@@ -28,12 +29,12 @@ def search_results(request):
         entries = SimulationResult.objects.filter(name__icontains=search_key)
         for e in entries:
             mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
-
+            mdbhost = Host.objects.get(id=mdb.host.id)
 
             res = {
                 "name": e.name,
                 "sim_id": e.sim_id,
-                "db_host": mdb.host,
+                "db_host": mdbhost.name,
                 "db_port": mdb.port,
                 "db_name": e.db_name
                 }

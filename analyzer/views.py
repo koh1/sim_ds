@@ -3,24 +3,52 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
+from series_manager.models import DataFrameDef
 import analyzer.plotter as plotter
 
 import json
 import logging
 import pymongo
+import redis
 import pandas as pd
 
-# Create your views here.
 
+# Create your views here.
+r = redis.Redis(host='127.0.0.1', port=6379, db=10)
 logger = logging.getLogger('application')
 
 def index(request):
     t = loader.get_template('analyzer/index.html')
+    dfds = DataFrameDef.objects.all()
+    data = []
+    for item in dfds:
+        data.append({
+                "id": item.id,
+                "name": item.name,
+                "columns": json.loads(item.column_items),
+                })
     c = RequestContext(request, {
-            'data': 10, #dummy
+            'data': data
             })
 
     return HttpResponse(t.render(c))
+
+def get_df_sample(request):
+    dfd_id = int(request.POST['id'])
+
+    dfd = DataFrameDef.objects.get(id=dfd_id)
+
+    res = {}
+    if not dfd == None:
+
+        columns = json.loads(dfd.column_items)
+
+        for col in columns:
+            key = "%s_%s" % (dfd.name, col)
+            res[col] = json.loads(r.get(key))[-5:-1]
+            logger.info(res[col])
+            
+    return HttpResponse(json.dumps(res), content_type='application/json')
 
 def analyze_index(request, sim_id):
     t = loader.get_template('analyzer/analyze_index.html')
@@ -103,13 +131,4 @@ def get_nwk_chart_data(request):
         ret.append(ydata)
     
     return HttpResponse(json.dumps(ret), content_type='application/json')
-
-def msg_index(request, sim_id):
-    t = loader.get_template('analyzer/msg_index.html')
-    return HttpResponse(t.render(c))
-
-
-def nd_index(request, sim_id):
-    t = loader.get_template('analyzer/nd_index.html')
-    return HttpResponse(t.render(c))
 
