@@ -31,11 +31,42 @@ $.ajaxSetup({
 
 
 function draw_chart(data) {
+    var xkey = "";
+    var valx = [];
+    var data = [];
+    for (var k in loaded_dfs) {
+	if (loaded_dfs[k]['xaxis'] == true) {
+	    xkey = k;
+	    valx = [k].concat(loaded_dfs[k]['value']);
+	} else {
+	    var oney = [k].concat(loaded_dfs[k]['value']);
+	    data.push(oney);
+	}
+	loaded_dfs[k]['label'] = $("#lable_" + k).val();
+    }
+    if (xkey == "") {
+	alert("Please specify a series for x-axis.");
+	return;
+    }
+    data.push(valx);
     var chart = c3.generate({
 	bindto: '#chart',
-
 	data: {
-            columns: data
+	    x: xkey,
+	    columns: data,
+	    type: 'scatter'
+	},
+
+	axis: {
+	    x: {
+		label: 'time',
+		tick: {
+		    fit: true
+		}
+	    },
+	    y: {
+		label: 'traffic'
+	    }
 	}
     });
 }
@@ -83,19 +114,27 @@ function make_series_for_chart(dfdid) {
     });
 }
 function store_series_for_chart(data) {
-    alert(data['key']);
     loaded_dfs[data['key']] = {
-	'label': "",
-	'value': data['value']
+	'label': data['key'],
+	'value': data['value'],
+	'xaxis': false
     };
     var elstr = "<tr>";
     elstr += "<td><a href='#' onclick='show_series(\"" + data['key'] + "\")'>" + data['key'] + "</a></td>"; 
     elstr += "<td>";
-    elstr += "<input type='text' class='form-control' placeholder='Input the label'></td>";
-    elstr += "<td><input type='radio' class='form-control' name='xaxis' value='" + data['key'] + "'></td>";
+    elstr += "<input type='text' id='label_" + data['key'] + "' class='form-control' value='" + data['key'] + "'></td>";
+    elstr += "<td><div class='radio'><label><input type='radio' name='xaxis' value='" + data['key'] + "' onclick='check_as_xaxis(this)'>select as x-axis</label></div></td>";
     elstr += "</tr>";
     $("#selected_data_frames").append(elstr);
 }
+
+function check_as_xaxis(el) {
+    for (var k in loaded_dfs) {
+	loaded_dfs[k]['xaxis'] = false;
+    }
+    loaded_dfs[el.value]['xaxis'] = true;
+}
+
 
 function show_series(key) {
     alert(loaded_dfs[key]['value']);
