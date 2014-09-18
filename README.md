@@ -75,11 +75,8 @@ $ cd ~/message_simulator_gui
 $ python manage.py runserver 0.0.0.0:8000
 ```
 
-## 2. Usage
+## 2. Documents
 
-
-## 3. Documents
-
-
+http://distpf1.png.flab.fujitsu.co.jp/projects/mbsgui/wiki
 
 ----
