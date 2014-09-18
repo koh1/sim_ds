@@ -27,12 +27,13 @@
 
 ### 1.3. ソースの取得
 
-
-
+```bash:
+$ git clone git@distpf2.png.flab.fujitsu.co.jp:dsv-scheduler/message_simulator_gui.git
+```
 
 ### 1.4. Data Storeの準備
 
-#### 設定
+#### 1.4.1. 設定
 
 ##### MySQL
 
@@ -40,9 +41,9 @@
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sim_ds',
-        'USER': 'root',
-        'PASSWORD': 'svn123',
+        'NAME': 'db_name',
+        'USER': 'db_user',
+        'PASSWORD': 'db_passwd',
         'HOST': '',
         'PORT': '',
     }
@@ -60,20 +61,19 @@ DATABASES = {
 }
 ```
 
-#### DB作成
+#### 1.4.2. DB作成
 
 ```bash:
+$ cd ~/message_simulator_gui
 $ python manage.py syncdb
 ```
 
 ### 1.5. 起動
 
 ```bash:
-$ cd xxx
+$ cd ~/message_simulator_gui
 $ python manage.py runserver 0.0.0.0:8000
 ```
-
-
 
 ## 2. Usage
 
