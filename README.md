@@ -12,13 +12,51 @@
 
 ### 1.1. Requirements
 
+||Version|
+|------|-----|
+|Python||
+|Python Django||
+|Python pandas||
+|pymongo||
+|python-redis||
+|MySQL||
+|Redis||
 
+### 1.2. 環境構築
 
-### 1.2. Python Django 環境構築
 
 ### 1.3. ソースの取得
 
+* MySQL
+
+```python:settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sim_ds',
+        'USER': 'root',
+        'PASSWORD': 'svn123',
+        'HOST': '',
+        'PORT': '',
+    }
+}
+```
+
+
+* SQLite
+
+```python:settings.py
+DATABASES = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+```
+
+
+
 ### 1.4. Data Storeの準備
+
 
 ### 1.5. 起動
 
