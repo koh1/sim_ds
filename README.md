@@ -8,19 +8,19 @@
 
 
 
-## Setup
+## 1. Setup
 
-### Requirements
+### 1.1. Requirements
 
 
 
-### Python Django 環境構築
+### 1.2. Python Django 環境構築
 
-### ソースの取得
+### 1.3. ソースの取得
 
-### Data Storeの準備
+### 1.4. Data Storeの準備
 
-### 起動
+### 1.5. 起動
 
 ```bash:
 $ cd xxx
@@ -29,6 +29,11 @@ $ python manage.py runserver 0.0.0.0:8000
 
 
 
-## Usage
+## 2. Usage
+
+
+## 3. Documents
+
+
 
 ----
