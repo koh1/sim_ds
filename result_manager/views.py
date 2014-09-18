@@ -14,8 +14,22 @@ logger = logging.getLogger('application')
 
 def index(request):
     t = loader.get_template('result_manager/index.html')
+    entries = SimulationResult.objects.all()
+    res_data = []
+    for e in entries:
+        mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
+        mdbhost = Host.objects.get(id=mdb.host.id)
+        res = {
+            "name": e.name,
+            "sim_id": e.sim_id,
+            "db_host": mdbhost.name,
+            "db_port": mdb.port,
+            "db_name": e.db_name
+            }
+        res_data.append(res)
+
     c = RequestContext(request, {
-            'data': 10,
+            'data': res_data
             })
 
     return HttpResponse(t.render(c))
