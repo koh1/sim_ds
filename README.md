@@ -10,6 +10,10 @@
 
 ## Setup
 
+### Requirements
+
+
+
 ### Python Django 環境構築
 
 ### ソースの取得
@@ -27,3 +31,4 @@ $ python manage.py runserver 0.0.0.0:8000
 
 ## Usage
 
+----
