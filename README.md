@@ -27,7 +27,14 @@
 
 ### 1.3. ソースの取得
 
-* MySQL
+
+
+
+### 1.4. Data Storeの準備
+
+#### 設定
+
+##### MySQL
 
 ```python:settings.py
 DATABASES = {
@@ -43,7 +50,7 @@ DATABASES = {
 ```
 
 
-* SQLite
+##### SQLite
 
 ```python:settings.py
 DATABASES = {
@@ -53,10 +60,11 @@ DATABASES = {
 }
 ```
 
+#### DB作成
 
-
-### 1.4. Data Storeの準備
-
+```bash:
+$ python manage.py syncdb
+```
 
 ### 1.5. 起動
 
