@@ -25,19 +25,25 @@ def index(request, sim_id):
         db = pymongo.Connection(dbhost.ipaddr, int(dbinfo.port))[result[0].db_name]
 
         ## for older version
-        confcoll = db['%s_config' % sim_id]
-        wnwcoll = db["%s_wide_nwk" % sim_id]
-        enwcoll = db["%s_edge_nwk" % sim_id]
-        edgendcoll = db["%s_edge" % sim_id]
+#        confcoll = db['%s_config' % sim_id]
+#        wnwcoll = db["%s_wide_nwk" % sim_id]
+#        enwcoll = db["%s_edge_nwk" % sim_id]
+#        edgendcoll = db["%s_edge" % sim_id]
+#        msgcoll = db["%s_msg" % sim_id]
+
+        ## for Newer version
+        confcoll = db['configs']
+        nwcoll = db["%s_nwk" % sim_id]
+        ndcoll = db["%s_node" % sim_id]
         msgcoll = db["%s_msg" % sim_id]
         
 
         c = RequestContext(request, {
                 "sim_id": sim_id,
-                "conf": list(confcoll.find())[0],
-                "nwk_log": list(enwcoll.find().limit(1)),
+                "conf": list(confcoll.find({"simulation_id": sim_id}))[0],
+                "nwk_log": list(nwcoll.find().limit(1)),
                 "msg_log": list(msgcoll.find().limit(1)),
-                "node_log": list(edgendcoll.find().limit(1))
+                "node_log": list(ndcoll.find().limit(1))
                 })
     else:
         c = RequestContext(request, {
