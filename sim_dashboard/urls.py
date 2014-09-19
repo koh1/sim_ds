@@ -12,8 +12,6 @@ urlpatterns = patterns('',
     ## my applications
     url(r'^$', 'result_manager.views.index'),
     url(r'^/main/get_topology_data/(?P<db_name>\w+)/(?P<coll_name>/w+)/$', 'main.views.get_topology_data'),
-    url(r'^nwk_vis/$', 'nwk_vis.views.index'),
-    url(r'^nwk_vis/get_nwk_traffic/(?P<db_name>\w+)/(?P<coll_name>\w+)/(?P<time>\d+)/$', 'nwk_vis.views.get_nwk_traffic'),
     url(r'^search_results/$', 'result_manager.views.search_results'),
     url(r'^analyzer/$', 'analyzer.views.index'),
 

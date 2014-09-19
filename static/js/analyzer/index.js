@@ -29,6 +29,27 @@ $.ajaxSetup({
     }
 });
 
+function draw_chart_from_def(data) {
+    var data = JSON.parse($("#c3json").val());
+    var chart = c3.generate({
+	bindto: '#chart',
+	data: data,
+	axis: {
+	    x: {
+		label: 'time',
+		tick: {
+		    fit: true
+		}
+	    },
+	    y: {
+		label: 'traffic'
+	    }
+	}
+    });
+    
+
+}
+
 
 function draw_chart(data) {
     var xkey = "";
