@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+<!--    <link rel="shortcut icon" href="assets/ico/favicon.ico"> ==>
+
+    <title>Simulation Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}bs/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ STATIC_URL }}css/starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Simulation Dashboard</a>
+        </div>
+        <div class="collapse navbar-collapse">
+	  {% block menubar %}
+          <ul class="nav navbar-nav">
+	    {% block menubar-result-manager %}
+            <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Result Manager</a>
+	      <ul class="dropdown-menu" role="menu">
+		<li><a href="/">List Results</a></li>
+	      </ul>
+	    </li>
+	    {% endblock %}
+	    {% block menubar-viewer %}
+	    <li><a href="#">Viewer</a></li>
+            <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analyzer</a>
+	      <ul class="dropdown-menu" role="menu">
+		<li><a href="/analyzer/">Chart Maker</a></li>
+		<li><a href="/series_manager/">Data Frame Manager</a></li>
+	      </ul>
+	    </li>
+	    {% endblock %}
+	    {% block menubar-execution %}
+            <li><a href="#">Execution</a></li>
+            <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Register</a>
+	      <ul class="dropdown-menu" role="menu">
+		<li><a href="#">Register Host</a></li>
+		<li><a href="#">Register Result Source</a></li>
+		<li><a href="#">Register Result</a></li>
+	      </ul>
+	    </li>
+	    {% endblock %}
+          </ul>
+	  {% endblock %}
+	  {% if user %}
+	  <p class="navbar-text navbar-right"><a href="/account/login/" class="navbar-link">Log in</a></p>
+	  {% else %}
+	  <p class="navbar-text navbar-right"><a href="/account/logout/" class="navbar-link">Log out</a></p>
+	  <p class="navbar-text navbar-right">{{ user.username }} / </p>
+	  {% endif %}
+	  
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+	{% block contents %}{% endblock %}
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
+    <script src="{{ STATIC_URL }}bs/js/bootstrap.min.js"></script>
+    {% block scripts %} {% endblock %}
+
+  </body>
+</html>
