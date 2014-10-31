@@ -8,7 +8,7 @@
     <meta name="author" content="">
 <!--    <link rel="shortcut icon" href="assets/ico/favicon.ico"> ==>
 
-    <title>Simulation Dashboard</title>
+    <title>Simulation DS</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ STATIC_URL }}bs/css/bootstrap.min.css" rel="stylesheet">
@@ -83,12 +83,13 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
+    {% block contents %}
     <div class="container">
       <div class="row">
-	{% block contents %}{% endblock %}
+
       </div><!-- /.row -->
     </div><!-- /.container -->
-
+    {% endblock %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
