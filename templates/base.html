@@ -73,7 +73,7 @@
 	    {% endblock %}
           </ul>
 	  {% endblock %}
-	  {% if user %}
+	  {% if not user.is_authenticated %}
 	  <p class="navbar-text navbar-right"><a href="/account/login/" class="navbar-link">Log in</a></p>
 	  {% else %}
 	  <p class="navbar-text navbar-right"><a href="/account/logout/" class="navbar-link">Log out</a></p>
