@@ -8,7 +8,7 @@ from main.models import Host
 
 import json
 import logging
-
+import yaml
 
 logger = logging.getLogger('application')
 
@@ -66,3 +66,22 @@ def search_results(request):
     
     
 
+def exec_index(request):
+
+    t = loader.get_template('result_manager/exec.html')    
+    c = RequestContext(request, {
+            'conf': 'dummy',
+            })
+    return HttpResponse(t.render(c))
+
+def exec_process(request):
+    conf = {}
+    logger.info(request.FILES['topologyfile'])
+    
+    
+    t = loader.get_template('result_manager/exec_result.html')    
+    c = RequestContext(request, {
+            'conf': conf,
+            })
+    return HttpResponse(t.render(c))
+        
