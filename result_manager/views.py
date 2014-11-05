@@ -75,13 +75,13 @@ def exec_index(request):
     return HttpResponse(t.render(c))
 
 def exec_process(request):
-    conf = {}
-    logger.info(request.FILES['topologyfile'])
+
     
+    bconffile = yaml.load(request.FILES['bconffile'].read())
     
     t = loader.get_template('result_manager/exec_result.html')    
     c = RequestContext(request, {
-            'conf': conf,
+            'conf': bconffile,
             })
     return HttpResponse(t.render(c))
         
