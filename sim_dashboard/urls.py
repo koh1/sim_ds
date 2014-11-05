@@ -11,6 +11,9 @@ urlpatterns = patterns('',
 
     ## my applications
     url(r'^$', 'result_manager.views.index'),
+    url(r'^exec/$', 'result_manager.views.exec_index'),
+    url(r'^exec_process$', 'result_manager.views.exec_process'),
+
     url(r'^/main/get_topology_data/(?P<db_name>\w+)/(?P<coll_name>/w+)/$', 'main.views.get_topology_data'),
     url(r'^search_results/$', 'result_manager.views.search_results'),
     url(r'^analyzer/$', 'analyzer.views.index'),
@@ -25,6 +28,8 @@ urlpatterns = patterns('',
     url(r'^series_manager/$', 'series_manager.views.index'),
     url(r'^series_manager/make_df_from_mdb/$', 'series_manager.views.make_df_from_mdb'),
     url(r'^series_manager/get_series_from_dfd/$', 'series_manager.views.get_series_from_dfd'),
+                       
+
 
     ## admin
     url(r'^admin/', include(admin.site.urls)),
