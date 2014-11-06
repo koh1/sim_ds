@@ -1,33 +1,37 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% block menubar-execution %}
+<li class="active"><a href="/exec/">Execution</a></li>
+{% endblock %}
+
 {% block contents %}
 <div class="container">
   <br />
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-4">
       <form method="post" action="/exec_process" role="form" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="form-group">
-	  <label for="bconffile">basic configuration file</label>
-	  <input type="file" id="bconffile" name="bconffile" />
+	  <label for="bconffile">Basic configuration file</label>
+	  <input type="file" class="form-control" id="bconffile" name="bconffile" />
 	</div>
 	<div class="form-group">
-	  <label for="topologyfile">topology definition file</label>
-	  <input type="file" id="topologyfile" name="topologyfile" />
+	  <label for="topologyfile">Topology definition file</label>
+	  <input type="file" class="form-control" id="topologyfile" name="topologyfile" />
 	</div>
 	<div class="form-group">
-	  <label for="nodespecfile">node spec file</label>
-	  <input type="file" id="nodespecfile" name="nodespecfile" />
+	  <label for="nodespecfile">Node specifications file</label>
+	  <input type="file" class="form-control" id="nodespecfile" name="nodespecfile" />
 	</div>
 	<div class="form-group">
-	  <label for="nwkdeffile">network definitions file</label>
-	  <input type="file" id="nwkdeffile" name="nwkdeffile" />
+	  <label for="nwkdeffile">Network definitions file</label>
+	  <input type="file" class="form-control" id="nwkdeffile" name="nwkdeffile" />
 	</div>
 	<div class="form-group">
-	  <label for="areadeffile">area definitions file</label>
-	  <input type="file" id="areadeffile" name="areadeffile" />
+	  <label for="areadeffile">Area definitions file</label>
+	  <input type="file" class="form-control" id="areadeffile" name="areadeffile" />
 	</div>
-	<input type="submit" value="execute" class="btn btn-primary" />
+	<input type="submit" value="confirm" class="btn btn-primary" />
       </form>
     </div>
   </div>

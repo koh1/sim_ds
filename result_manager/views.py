@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
@@ -9,6 +10,7 @@ from main.models import Host
 import json
 import logging
 import yaml
+
 
 logger = logging.getLogger('application')
 
@@ -75,13 +77,24 @@ def exec_index(request):
     return HttpResponse(t.render(c))
 
 def exec_process(request):
-
+    if len(request.FILES) < 1:
+        return HttpResponseRedirect('/exec/')
     
-    bconffile = yaml.load(request.FILES['bconffile'].read())
+    try:
+        bconf = yaml.load(request.FILES['bconffile'].read())
+    except yaml.YAMLError, exc:
+        logger.error("YAMLError", exc)
+        return HttpResponseRedirect('/exec/')
+
+#    topologyfile = request.FILES['topologyfile'].read()
+#    nodespecfile = request.FILES['nodespecfile'].read()
+#    nwkdeffile = request.FILES['nwkdeffile'].read()
+#    areadeffile = request.FILES['areadeffile'].read()
+    
     
     t = loader.get_template('result_manager/exec_result.html')    
     c = RequestContext(request, {
-            'conf': bconffile,
+            'conf': bconf,
             })
     return HttpResponse(t.render(c))
         

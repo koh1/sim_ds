@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'result_manager',
     'series_manager',
     'result_viewer',
@@ -138,6 +139,15 @@ LOGGING = {
 
 LOGIN_URL = "/account/login/"
 LOGIN_REDIRECT_URL = "/"
+
+## Django-Celery
+
+BROKER_HOST = "172.16.51.2"
+BROKER_PORT = 5672
+BROKER_USER = "dsv"
+BROKER_PASSWORD = "dsv123"
+BROKER_VHOST = "sim"
+CELERY_RESULT_BACKEND = "amqp"
 
 
 # Static files (CSS, JavaScript, Images)
