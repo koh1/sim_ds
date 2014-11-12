@@ -39,10 +39,10 @@ def exec_d2xp_mbs(conf, scale, num_area):
     area_def_file = "conf/area_info_%d_area%d.csv" % (scale, num_area)
 
     os.chdir("/home/vagrant/message_simulator")
-    cmd = "python d2xp_system.py config.yml %s %s %s %s" % (rt_conf_file, 
-                                                         nd_spec_file,
-                                                         nw_def_file,
-                                                         area_def_file)
+    cmd = "python d2xp_sim_system.py config.yml %s %s %s %s" % (rt_conf_file, 
+                                                                nd_spec_file,
+                                                                nw_def_file,
+                                                                area_def_file)
     return commands.getoutput(cmd)
 
 @task
