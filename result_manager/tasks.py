@@ -45,7 +45,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
                                                                 nd_spec_file,
                                                                 nw_def_file,
                                                                 area_def_file)
-    p = subprocess.Popen(cmd, cwd=cdir, shell=False, 
+    p = subprocess.Popen(cmd, cwd=cdir, shell=True,
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
