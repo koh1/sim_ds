@@ -36,7 +36,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     nw_def_file = "conf/network_%d.yml" % scale
 
     ## area definitiion
-    area_def_file = "conf/area_info_%d_area%d.csv"
+    area_def_file = "conf/area_info_%d_area%d.csv" % (scale, num_area)
 
     os.chdir("/home/vagrant/message_simulator")
     cmd = "python d2xp_system.py config.yml %s %s %s" % (rt_conf_file, 
