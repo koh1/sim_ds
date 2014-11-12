@@ -54,6 +54,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     result['exit_code'] = ext_code
     result['stdout'] = p.stdout.readlines()
     result['stderr'] = p.stderr.readlines()
+    logger.info(json.dumps(result, sort_keys=True, indent=2)
 
     return json.dumps(result)
 
