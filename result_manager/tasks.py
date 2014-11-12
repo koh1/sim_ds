@@ -6,6 +6,7 @@ import sys
 import commands
 import yaml
 
+
 class AddTask(Task):
     def rung(self, x, y):
         logger = self.get_logger(task_name=u'class')
@@ -36,7 +37,8 @@ def exec_d2xp_mbs(conf, scale, num_area):
 
     ## area definitiion
     area_def_file = "conf/area_info_%d_area%d.csv"
-    os.chdir("~/message_simulator")
+
+    os.chdir("/home/vagrant/message_simulator")
     cmd = "python d2xp_system.py config.yml %s %s %s" % (rt_conf_file, 
                                                          nd_spec_file,
                                                          nw_def_file,
