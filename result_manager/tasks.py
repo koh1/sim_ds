@@ -4,6 +4,7 @@ from celery.decorators import task
 import os
 import sys
 import commands
+import yaml
 
 class AddTask(Task):
     def rung(self, x, y):
