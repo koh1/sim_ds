@@ -29,7 +29,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     fo.write(yaml.dump(conf))
 
     ## routing configuration
-    rt_conf_file = "conf/routing_%d_area_%d.csv" % (scale, num_area)
+    rt_conf_file = "conf/routing_%d_area%d.csv" % (scale, num_area)
 
     ## node_spec 
     nd_spec_file = "conf/node_spec_%d.yml" % scale
