@@ -25,7 +25,7 @@ def add(x, y):
 def exec_d2xp_mbs(conf, scale, num_area):
 
     logger = Task.get_logger()
-    fo = open("config.yml", "w")
+    fo = open("/home/vagrant/message_simulator/config.yml", "w")
     fo.write(yaml.dump(conf))
 
     ## routing configuration
@@ -49,8 +49,6 @@ def exec_d2xp_mbs(conf, scale, num_area):
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
-    
-
     ext_code = p.wait()
     result = {}
     result['exit_code'] = ext_code
