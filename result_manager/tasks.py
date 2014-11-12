@@ -5,6 +5,8 @@ import os
 import sys
 import commands
 import yaml
+import json
+import subprocess
 
 
 class AddTask(Task):
@@ -38,12 +40,24 @@ def exec_d2xp_mbs(conf, scale, num_area):
     ## area definitiion
     area_def_file = "conf/area_info_%d_area%d.csv" % (scale, num_area)
 
-    os.chdir("/home/vagrant/message_simulator")
+    cdir = "/home/vagrant/message_simulator"
     cmd = "python d2xp_sim_system.py config.yml %s %s %s %s" % (rt_conf_file, 
                                                                 nd_spec_file,
                                                                 nw_def_file,
                                                                 area_def_file)
-    return commands.getoutput(cmd)
+    p = subprocess.Popen(cmd, cwd=cdir, shell=False, 
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    
+
+    ext_code = p.wait()
+    result = {}
+    result['exit_code'] = ext_code
+    result['stdout'] = p.stdout.readlines()
+    result['stderr'] = p.stderr.readlines()
+
+    return json.dumps(result)
 
 @task
 def mbs_exec(conf):

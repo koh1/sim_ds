@@ -94,6 +94,7 @@ def exec_process(request):
     
     r = exec_d2xp_mbs.delay(bconf, 16, 1)
     logger.info("[exec_d2xp_mbs] %s" % r.status)
+    logger.info("[exec_d2xp_mbs] \t%s" % r.result
     tid = r.task_id
 
     # layout
