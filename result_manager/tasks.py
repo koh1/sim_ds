@@ -27,6 +27,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     logger = Task.get_logger()
     fo = open("/home/vagrant/message_simulator/config.yml", "w")
     fo.write(yaml.dump(conf))
+    fo.close()
 
     ## routing configuration
     rt_conf_file = "conf/routing_%d_area%d.csv" % (scale, num_area)
