@@ -93,10 +93,13 @@ def exec_process(request):
 #    areadeffile = request.FILES['areadeffile'].read()
     
     r = exec_d2xp_mbs.delay(bconf, 16, 1)
+    logger.info("[exec_d2xp_mbs] %s" % r.status)
     tid = r.task_id
+
+    # layout
     t = loader.get_template('result_manager/exec_result.html')    
     c = RequestContext(request, {
-            'conf': bconf,
+            'task_id': tid,
             })
     return HttpResponse(t.render(c))
         
