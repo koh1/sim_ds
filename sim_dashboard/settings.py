@@ -141,12 +141,12 @@ LOGIN_URL = "/account/login/"
 LOGIN_REDIRECT_URL = "/"
 
 ## Django-Celery
-
-BROKER_HOST = "172.16.51.2"
-BROKER_PORT = 5672
-BROKER_USER = "guest"
-BROKER_PASSWORD = "guest"
-BROKER_VHOST = "/"
+BROKER_URL="amqp://guest:guest@172.16.51.11:5672//"
+#BROKER_HOST = "172.16.51.11"
+#BROKER_PORT = 5672
+#BROKER_USER = "guest"
+#BROKER_PASSWORD = "guest"
+#BROKER_VHOST = "/"
 CELERY_RESULT_BACKEND = "amqp"
 
 

@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
+from result_manager.tasks import exec_d2xp_mbs
 from main.models import Host
 
 import json
@@ -91,10 +92,15 @@ def exec_process(request):
 #    nwkdeffile = request.FILES['nwkdeffile'].read()
 #    areadeffile = request.FILES['areadeffile'].read()
     
-    
+    r = exec_d2xp_mbs.delay(bconf, 16, 1)
+    logger.info("[exec_d2xp_mbs] %s" % r.status)
+    logger.info("[exec_d2xp_mbs] \t%s" % r.result)
+    tid = r.task_id
+
+    # layout
     t = loader.get_template('result_manager/exec_result.html')    
     c = RequestContext(request, {
-            'conf': bconf,
+            'task_id': tid,
             })
     return HttpResponse(t.render(c))
         
