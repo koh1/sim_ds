@@ -1,5 +1,6 @@
 from django.db import models
 from main.models import Host
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -16,8 +17,9 @@ class SimulationResult(models.Model):
     db_name = models.CharField(max_length=256)
     sim_id = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
-
+    task_id = models.CharField(max_length=36)
+    task_status = models.CharField(max_length=16)
+    owner = models.ForeignKey(User)
 
     def __unicode__(self):
         return u'%s' % self.name
-    

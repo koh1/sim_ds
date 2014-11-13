@@ -77,7 +77,10 @@ def exec_index(request):
             })
     return HttpResponse(t.render(c))
 
+@login_required
 def exec_process(request):
+    
+    
     if len(request.FILES) < 1:
         return HttpResponseRedirect('/exec/')
     
@@ -86,21 +89,42 @@ def exec_process(request):
     except yaml.YAMLError, exc:
         logger.error("YAMLError", exc)
         return HttpResponseRedirect('/exec/')
-
-#    topologyfile = request.FILES['topologyfile'].read()
-#    nodespecfile = request.FILES['nodespecfile'].read()
-#    nwkdeffile = request.FILES['nwkdeffile'].read()
-#    areadeffile = request.FILES['areadeffile'].read()
     
-    r = exec_d2xp_mbs.delay(bconf, 16, 1)
+    sys_scale = request.POST['scale']
+    nof_area = request.POST['noarea']
+    
+    mdb_id = 0
+    mdbs = ResultSourceMongodb.objects.filter(host__exact=bconf['store_mongo_db']['host'],
+                                              port__exact=bconf['store_mongo_db']['port'])
+    if len(mdbs) == 0:
+        # add entry
+        mdb = ResultSourceMongodb(host=bconf['store_mongo_db']['host'],
+                                  port=bconf['store_mongo_db']['port'])
+        mdb.save()
+        mdb_id = mdb.id
+    else:
+        mdb_id = mdbs[0].id
+        
+    sr = SimulationResult(result_source_mongodb = mdb_id,
+                          db_name = bconf['store_mongo_db']['db'],
+                          sim_id = "",
+                          name = "",
+                          task_id = "",
+                          owner = request.user.id)
+    sr.save()
+
+    r = exec_d2xp_mbs.delay(bconf, sys_scale, noarea)
+    sr.task_id = r.task_id
+    sr.save()
+
     logger.info("[exec_d2xp_mbs] %s" % r.status)
     logger.info("[exec_d2xp_mbs] \t%s" % r.result)
-    tid = r.task_id
 
     # layout
     t = loader.get_template('result_manager/exec_result.html')    
     c = RequestContext(request, {
-            'task_id': tid,
+            'task_id': r.task_id,
+            'scale': request.POST['scale'],
+            'noarea': request.POST['noarea'],
             })
     return HttpResponse(t.render(c))
-        

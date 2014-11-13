@@ -1,5 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from celery.task import Task
 from celery.decorators import task
+from celery.result import AsyncResult
+from result_manager.models import ResultSourceMongodb
+from result_manager.models import SimulationResult
+
 
 import os
 import sys
@@ -7,6 +13,7 @@ import commands
 import yaml
 import json
 import subprocess
+import datetime
 
 
 class AddTask(Task):
@@ -23,9 +30,10 @@ def add(x, y):
 
 @task
 def exec_d2xp_mbs(conf, scale, num_area):
-
     logger = Task.get_logger()
-    fo = open("/home/vagrant/message_simulator/config.yml", "w")
+
+    conf_pst_fix = datetime.datetime.today().strftime("%Y%m%d_%H%M%S")
+    fo = open("/home/vagrant/message_simulator/config_%.yml" % (conf_pst_fix,) , "w")
     fo.write(yaml.dump(conf))
     fo.close()
 
@@ -46,16 +54,46 @@ def exec_d2xp_mbs(conf, scale, num_area):
                                                                 nd_spec_file,
                                                                 nw_def_file,
                                                                 area_def_file)
+
     p = subprocess.Popen(cmd, cwd=cdir, shell=True,
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
+
+    
+    
     ext_code = p.wait()
     result = {}
     result['exit_code'] = ext_code
     result['stdout'] = p.stdout.readlines()
     result['stderr'] = p.stderr.readlines()
     logger.info(json.dumps(result, sort_keys=True, indent=2))
+
+    ## very poor implementation because these worker tasks 
+    ## are seperated from the simulation program "mbs". 
+    
+    sim_id = ""
+    if ext_code == 0:
+        # mbs is successfully completed.
+        for line in result['stdout']:
+            items = line.split(' ')
+            if items[0] == "Simulation":
+                sim_id = items[1]
+        if sim_id == "":
+            ## simulation was failed
+            pass
+        else:
+            sr = SimulationResult.objects.filter(task_id__exact=exec_d2xp_mbs.request.id)
+            if len(sr) > 0:
+                sr.sim_id = sim_id
+                sr.save()
+            else:
+                # something is wrong
+                # maybe view does not store SimulationResult entry
+                pass
+    else:
+        # simulation was failed
+        pass
 
     return json.dumps(result)
 
@@ -69,3 +107,8 @@ def exec_mbs():
     logger = Task.get_logger()
     os.chdir("/home/vagrant/message_simulator")
     return os.environ['HOME']
+
+@task
+def monitor_mbs(task_id):
+    r = AsyncResult(task_id)
+    

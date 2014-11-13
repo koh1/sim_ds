@@ -16,20 +16,18 @@
 	  <input type="file" class="form-control" id="bconffile" name="bconffile" />
 	</div>
 	<div class="form-group">
-	  <label for="topologyfile">Topology definition file</label>
-	  <input type="file" class="form-control" id="topologyfile" name="topologyfile" />
+	  <label for="scale">scale</label>
+	  <select class="form-control" id="scale" name="scale">
+	    <option value="16">16</option>
+	    <option value="256">256</option>
+	  </select>
 	</div>
 	<div class="form-group">
-	  <label for="nodespecfile">Node specifications file</label>
-	  <input type="file" class="form-control" id="nodespecfile" name="nodespecfile" />
-	</div>
-	<div class="form-group">
-	  <label for="nwkdeffile">Network definitions file</label>
-	  <input type="file" class="form-control" id="nwkdeffile" name="nwkdeffile" />
-	</div>
-	<div class="form-group">
-	  <label for="areadeffile">Area definitions file</label>
-	  <input type="file" class="form-control" id="areadeffile" name="areadeffile" />
+	  <label for="noarea">Number of Areas</label>
+	  <select class="form-control" id="noarea" name="noarea">
+	    <option value="1">1</option>
+	    <option value="4">4</option>
+	  </select>
 	</div>
 	<input type="submit" value="confirm" class="btn btn-primary" />
       </form>
