@@ -97,8 +97,8 @@ def exec_process(request):
         logger.error("YAMLError", exc)
         return HttpResponseRedirect('/exec/')
     
-    sys_scale = request.POST['scale']
-    noarea = request.POST['noarea']
+    sys_scale = int(request.POST['scale'])
+    noarea = int(request.POST['noarea'])
 
     mdb_host_id = -1
     mdb_host = None
