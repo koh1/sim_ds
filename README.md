@@ -109,7 +109,7 @@ $ celery -A sim_dashboard worker -l info -Q MAIN
 * シミュレーション実行workerの起動
 ```bash:
 $ cd ~/message_simulator_gui
-$ celery -A sim_dashboard worker -l info # -Q celery
+$ celery -A sim_dashboard worker -l info 
 ```
 
 ## 2. Documents
