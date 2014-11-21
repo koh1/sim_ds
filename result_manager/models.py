@@ -19,6 +19,7 @@ class SimulationResult(models.Model):
     name = models.CharField(max_length=256)
     task_id = models.CharField(max_length=36)
     task_status = models.CharField(max_length=16)
+    config = models.TextField()
     owner = models.ForeignKey(User)
 
     def __unicode__(self):

@@ -23,16 +23,20 @@
     <div class="col-md-12">
       <table class="table">
 	<thead>
-	  <tr><th>name</th><th>DB Host</th><th>DB Port</th><th>DB Name</th><th>SIM ID</th><th></th></tr>
+	  <tr><th>SIM ID</th><th>Q</th><th>users</th><th>c_size</th><th>plan cycle</th><th>user cycle</th><th>scale</th><th>areas</th><th>owner</th></tr>
 	    </thead>
 	    <tbody id="search_results_table">
 	      {% for e in data %}
 	      <tr>
-		<td>{{ e.name }}</td>
-		<td>{{ e.db_host }}</td>
-		<td>{{ e.db_port }}</td>
-		<td>{{ e.db_name }}</td>
 		<td>{{ e.sim_id }}</td>
+		<td>{{ e.queue_method }}</td>
+		<td>{{ e.num_of_users }}</td>
+		<td>{{ e.contents_size }}</td>
+		<td>{{ e.planning_cycle }}</td>
+		<td>{{ e.user_act_span }}</td>
+		<td>{{ e.scale }}</td>
+		<td>{{ e.num_of_areas }}</td>
+		<td>{{ e.owner }}</td>
 		<td><button class="btn btn-primary" onclick="location.href='/result_viewer/{{ e.sim_id }}'">View</button></td>
 	      </tr>
 	      {% endfor %}

@@ -3,10 +3,14 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
 from result_manager.tasks import exec_d2xp_mbs
 from main.models import Host
+
 
 import json
 import logging
@@ -15,6 +19,7 @@ import yaml
 
 logger = logging.getLogger('application')
 
+@login_required
 def index(request):
     t = loader.get_template('result_manager/index.html')
     entries = SimulationResult.objects.all()
@@ -22,12 +27,25 @@ def index(request):
     for e in entries:
         mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
         mdbhost = Host.objects.get(id=mdb.host.id)
+        config = json.loads(e.config)
+        
         res = {
             "name": e.name,
             "sim_id": e.sim_id,
             "db_host": mdbhost.name,
             "db_port": mdb.port,
-            "db_name": e.db_name
+            "db_name": e.db_name,
+            "owner": e.owner.username,
+            "num_of_users": config['num_of_users'],
+            "num_of_contents": config['contents']['num_of_contents'],
+            "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
+            "step_width_us": config['step_width_us'],
+            "total_siml_time_sec": config['total_siml_time_sec'],
+            "planning_cycle": config['planning']['planning_span_us'],
+            "scale": config['scale'],
+            "num_of_areas": config['num_of_areas'],
+            "queue_method": config['queue_method']['node_queue'],
+            "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
             }
         res_data.append(res)
 
@@ -47,13 +65,25 @@ def search_results(request):
         for e in entries:
             mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
             mdbhost = Host.objects.get(id=mdb.host.id)
+            config = json.loads(e.config)
 
             res = {
                 "name": e.name,
                 "sim_id": e.sim_id,
                 "db_host": mdbhost.name,
                 "db_port": mdb.port,
-                "db_name": e.db_name
+                "db_name": e.db_name,
+                "owner": e.owner.username,
+                "num_of_users": config['num_of_users'],
+                "num_of_contents": config['contents']['num_of_contents'],
+                "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
+                "step_width_us": config['step_width_us'],
+                "total_siml_time_sec": config['total_siml_time_sec'],
+                "planning_cycle": config['planning']['planning_span_us'],
+                "scale": config['scale'],
+                "num_of_areas": config['num_of_areas'],
+                "queue_method": config['queue_method']['node_queue'],
+                "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
                 }
             res_data.append(res)
 
@@ -68,7 +98,7 @@ def search_results(request):
 
     
     
-
+@login_required
 def exec_index(request):
 
     t = loader.get_template('result_manager/exec.html')    
@@ -77,9 +107,10 @@ def exec_index(request):
             })
     return HttpResponse(t.render(c))
 
+
+
 @login_required
 def exec_process(request):
-    
     
     if len(request.FILES) < 1:
         return HttpResponseRedirect('/exec/')
@@ -90,27 +121,47 @@ def exec_process(request):
         logger.error("YAMLError", exc)
         return HttpResponseRedirect('/exec/')
     
-    sys_scale = request.POST['scale']
-    nof_area = request.POST['noarea']
+    sys_scale = int(request.POST['scale'])
+    noarea = int(request.POST['noarea'])
     
+    bconf['scale'] = sys_scale
+    bconf['num_of_areas'] = noarea
+
+    mdb_host_id = -1
+    mdb_host = None
+    mdb_hosts = Host.objects.filter(name__exact=bconf['store_mongo_db']['host'])
+    if len(mdb_hosts) == 0:
+        mdb_host = Host(name=bconf['store_mongo_db']['host'],
+                        ipaddr=bconf['store_mongo_db']['host'],
+                        if_worker = False,
+                        if_result_store = True)
+        mdb_host.save()
+        mdb_host_id = mdb_host.id
+    else:
+        mdb_host = mdb_hosts[0]
+        mdb_host_id = mdb_host.id
+        
     mdb_id = 0
-    mdbs = ResultSourceMongodb.objects.filter(host__exact=bconf['store_mongo_db']['host'],
+    mdb = None
+    mdbs = ResultSourceMongodb.objects.filter(host_id__exact=mdb_host_id,
                                               port__exact=bconf['store_mongo_db']['port'])
     if len(mdbs) == 0:
         # add entry
-        mdb = ResultSourceMongodb(host=bconf['store_mongo_db']['host'],
+        mdb = ResultSourceMongodb(host=mdb_host,
                                   port=bconf['store_mongo_db']['port'])
         mdb.save()
         mdb_id = mdb.id
     else:
-        mdb_id = mdbs[0].id
-        
-    sr = SimulationResult(result_source_mongodb = mdb_id,
+        mdb = mdbs[0]
+        mdb_id = mdb.id
+
+    sr = SimulationResult(result_source_mongodb = mdb,
                           db_name = bconf['store_mongo_db']['db'],
                           sim_id = "",
                           name = "",
                           task_id = "",
-                          owner = request.user.id)
+                          config = json.dumps(bconf),
+                          owner = User.objects.get(id=request.user.id))
     sr.save()
 
     r = exec_d2xp_mbs.delay(bconf, sys_scale, noarea)
