@@ -33,7 +33,7 @@ def index(request):
             "db_host": mdbhost.name,
             "db_port": mdb.port,
             "db_name": e.db_name,
-            "owner": e.user.name
+            "owner": e.owner.username
             }
         res_data.append(res)
 
