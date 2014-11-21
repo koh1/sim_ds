@@ -102,11 +102,12 @@ def exec_mbs():
 def retrieve_mbs_result(target_task_id):
     r = AsyncResult(target_task_id)
     sr = SimulationResult.objects.get(task_id__exact=target_task_id)
-    if r.result['exit_code'] == 0:
+    result = json.loads(r.result)
+    
+    if result['exit_code'] == 0:
         ## success
-        sr.sim_id = r.result['sim_id']
+        sr.sim_id = result['sim_id']
         sr.save()
     else:
         sr.sim_id = "NO SIM_ID (FAILED)"
         sr.save()
-    
