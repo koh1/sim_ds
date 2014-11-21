@@ -27,13 +27,25 @@ def index(request):
     for e in entries:
         mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
         mdbhost = Host.objects.get(id=mdb.host.id)
+        config = json.loads(e.config)
+        
         res = {
             "name": e.name,
             "sim_id": e.sim_id,
             "db_host": mdbhost.name,
             "db_port": mdb.port,
             "db_name": e.db_name,
-            "owner": e.owner.username
+            "owner": e.owner.username,
+            "num_of_users": config['num_of_users'],
+            "num_of_contents": config['contents']['num_of_contents'],
+            "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
+            "step_width_us": config['step_width_us'],
+            "total_siml_time_sec": config['total_siml_time_sec'],
+            "planning_cycle": config['planning']['planning_span_us'],
+            "scale": config['scale'],
+            "num_of_areas": config['num_of_areas'],
+            "queue_method": config['queue_method']['node_queue'],
+            "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
             }
         res_data.append(res)
 
@@ -53,13 +65,25 @@ def search_results(request):
         for e in entries:
             mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
             mdbhost = Host.objects.get(id=mdb.host.id)
+            config = json.loads(e.config)
 
             res = {
                 "name": e.name,
                 "sim_id": e.sim_id,
                 "db_host": mdbhost.name,
                 "db_port": mdb.port,
-                "db_name": e.db_name
+                "db_name": e.db_name,
+                "owner": e.owner.username,
+                "num_of_users": config['num_of_users'],
+                "num_of_contents": config['contents']['num_of_contents'],
+                "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
+                "step_width_us": config['step_width_us'],
+                "total_siml_time_sec": config['total_siml_time_sec'],
+                "planning_cycle": config['planning']['planning_span_us'],
+                "scale": config['scale'],
+                "num_of_areas": config['num_of_areas'],
+                "queue_method": config['queue_method']['node_queue'],
+                "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
                 }
             res_data.append(res)
 
@@ -99,6 +123,9 @@ def exec_process(request):
     
     sys_scale = int(request.POST['scale'])
     noarea = int(request.POST['noarea'])
+    
+    bconf['scale'] = sys_scale
+    bconf['num_of_areas'] = noarea
 
     mdb_host_id = -1
     mdb_host = None
