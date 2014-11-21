@@ -23,7 +23,7 @@
     <div class="col-md-12">
       <table class="table">
 	<thead>
-	  <tr><th>name</th><th>DB Host</th><th>DB Port</th><th>DB Name</th><th>SIM ID</th><th></th></tr>
+	  <tr><th>name</th><th>DB Host</th><th>DB Port</th><th>DB Name</th><th>SIM ID</th><th>Owner</th></tr>
 	    </thead>
 	    <tbody id="search_results_table">
 	      {% for e in data %}
@@ -33,6 +33,7 @@
 		<td>{{ e.db_port }}</td>
 		<td>{{ e.db_name }}</td>
 		<td>{{ e.sim_id }}</td>
+		<td>{{ e.owner }}</td>
 		<td><button class="btn btn-primary" onclick="location.href='/result_viewer/{{ e.sim_id }}'">View</button></td>
 	      </tr>
 	      {% endfor %}

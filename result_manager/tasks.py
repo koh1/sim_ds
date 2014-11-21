@@ -59,8 +59,6 @@ def exec_d2xp_mbs(conf, scale, num_area):
                          stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE)
-
-    
     
     ext_code = p.wait()
     result = {}
@@ -81,19 +79,11 @@ def exec_d2xp_mbs(conf, scale, num_area):
                 sim_id = items[1]
         if sim_id == "":
             ## simulation was failed
-            pass
-        else:
-            sr = SimulationResult.objects.filter(task_id__exact=exec_d2xp_mbs.request.id)
-            if len(sr) > 0:
-                sr.sim_id = sim_id
-                sr.save()
-            else:
-                # something is wrong
-                # maybe view does not store SimulationResult entry
-                pass
-    else:
-        # simulation was failed
-        pass
+            sim_id = "may_be_failed_%s" % datetime.datetime.today().strftime("%Y%m%d%H%M%S")
+    
+    result['sim_id'] = sim_id
+    task_id = exec_d2xp_mbs.request.id
+    r = retrieve_mbs_result.delay(task_id, queue='MAIN')
 
     return json.dumps(result)
 
@@ -109,6 +99,14 @@ def exec_mbs():
     return os.environ['HOME']
 
 @task
-def monitor_mbs(task_id):
+def retrieve_mbs_result(task_id):
     r = AsyncResult(task_id)
+    sr = SimulationResult.objects.get(task_id__exact=task_id)
+    if r.result['exit_code'] == 0:
+        ## success
+        sr.sim_id = r.result['sim_id']
+        sr.save()
+    else:
+        sr.sim_id = "NO SIM_ID (FAILED)"
+        sr.save()
     
