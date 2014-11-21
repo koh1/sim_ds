@@ -33,7 +33,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     logger = Task.get_logger()
 
     conf_pst_fix = datetime.datetime.today().strftime("%Y%m%d_%H%M%S")
-    fo = open("/home/vagrant/message_simulator/config_%.yml" % (conf_pst_fix,) , "w")
+    fo = open("/home/vagrant/message_simulator/config_%s.yml" % (conf_pst_fix,) , "w")
     fo.write(yaml.dump(conf))
     fo.close()
 
@@ -83,7 +83,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     
     result['sim_id'] = sim_id
     task_id = exec_d2xp_mbs.request.id
-    r = retrieve_mbs_result.delay(task_id, queue='MAIN')
+    r = retrieve_mbs_result.apply_async(args=[task_id], queue='MAIN')
 
     return json.dumps(result)
 
