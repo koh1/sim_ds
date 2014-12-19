@@ -2,12 +2,15 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% block menubar-result-manager %}
+<li class="active"><a href="/">Home</a></li>
+<!--
 <li class="dropdown active">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Result Manager</a>
   <ul class="dropdown-menu" role="menu">
     <li><a href="/">List Results</a></li>
   </ul>
 </li>
+-->
 {% endblock %}
 
 {% block contents %}
@@ -23,7 +26,7 @@
     <div class="col-md-12">
       <table class="table">
 	<thead>
-	  <tr><th>SIM ID</th><th>Q</th><th>users</th><th>c_size</th><th>plan cycle</th><th>user cycle</th><th>scale</th><th>areas</th><th>owner</th></tr>
+	  <tr><th>SIM ID</th><th>Q</th><th>users</th><th>c_size</th><th>plan cycle</th><th>user cycle</th><th>scale</th><th>areas</th><th>owner</th><th>status</th><th>%</th></tr>
 	    </thead>
 	    <tbody id="search_results_table">
 	      {% for e in data %}
@@ -37,6 +40,8 @@
 		<td>{{ e.scale }}</td>
 		<td>{{ e.num_of_areas }}</td>
 		<td>{{ e.owner }}</td>
+		<td>{{ e.status }}</td>
+		<td>{{ e.progress }}</td>
 		<td><button class="btn btn-primary" onclick="location.href='/result_viewer/{{ e.sim_id }}'">View</button></td>
 	      </tr>
 	      {% endfor %}

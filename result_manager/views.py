@@ -61,7 +61,7 @@ def search_results(request):
     res_data = []
     if search_key != "":
         logger.info(request.POST['search_key'])
-        entries = SimulationResult.objects.filter(name__icontains=search_key)
+        entries = SimulationResult.objects.filter(sim_id__icontains=search_key)
         for e in entries:
             mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
             mdbhost = Host.objects.get(id=mdb.host.id)
@@ -74,6 +74,8 @@ def search_results(request):
                 "db_port": mdb.port,
                 "db_name": e.db_name,
                 "owner": e.owner.username,
+                "status": e.task_status,
+                "progress": e.task_progress,
                 "num_of_users": config['num_of_users'],
                 "num_of_contents": config['contents']['num_of_contents'],
                 "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
@@ -160,6 +162,8 @@ def exec_process(request):
                           sim_id = "",
                           name = "",
                           task_id = "",
+                          task_status = "",
+                          task_progress = 0,
                           config = json.dumps(bconf),
                           owner = User.objects.get(id=request.user.id))
     sr.save()

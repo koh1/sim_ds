@@ -1,142 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-<!--    <link rel="shortcut icon" href="assets/ico/favicon.ico"> ==>
 
-    <title>Simulation Dashboard</title>
+{% extends "base.html" %}
+{% load url from future %}
+{% block menubar-result-manager %}
+<li class="active"><a href="/">Home</a></li>
+<!--
+<li class="dropdown active">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Result Manager</a>
+  <ul class="dropdown-menu" role="menu">
+    <li><a href="/">List Results</a></li>
+  </ul>
+</li>
+-->
+{% endblock %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="{{ STATIC_URL }}bs/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{{ STATIC_URL }}css/starter-template.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Simulation Dashboard</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Result Manager</a>
-	      <ul class="dropdown-menu" role="menu">
-		<li><a href="/">List Results</a></li>
-	      </ul>
-	    </li>
-	    <li class="disabled"><a href="#">Viewer</a></li>
-            <li class="dropdown active">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analyzer</a>
-	      <ul class="dropdown-menu" role="menu">
-		<li><a href="/analyzer/">Chart Maker</a></li>
-		<li><a href="/series_manager/">Data Frame Manager</a></li>
-	      </ul>
-	    </li>
-            <li><a href="#">Execution</a></li>
-            <li class="dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Register</a>
-	      <ul class="dropdown-menu" role="menu">
-		<li><a href="#">Register Host</a></li>
-		<li><a href="#">Register Result Source</a></li>
-		<li><a href="#">Register Result</a></li>
-	      </ul>
-	    </li>
-          </ul>
-	  {% if user %}
-	  <p class="navbar-text navbar-right"><a href="#" class="navbar-link">Log in</a></p>
-	  {% else %}
-	  <p class="navbar-text navbar-right"><a href="#" class="navbar-link">Log out</a></p>
-	  <p class="navbar-text navbar-right">{{ user.username }} / </p>
-	  {% endif %}
-	  
-        </div><!--/.nav-collapse -->
-      </div>
+{% block contents %}
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+      <input type="text" class="form-control" placeholder="input search keyword" id="results_search_in" onkeyup="search_results()">
     </div>
-
-    <div class="container">
-      <div class="row">
-	<div class="col-md-5">
-	  <h4><span class="label label-default">Series from Data Frames</span></h4>
-	  <table class="table table-condensed">
-	    <tbody id="selected_data_frames">
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+	<thead>
+	  <tr><th>SIM ID</th><th>Q</th><th>users</th><th>c_size</th><th>plan cycle</th><th>user cycle</th><th>scale</th><th>areas</th><th>owner</th><th>status</th><th>%</th></tr>
+	    </thead>
+	    <tbody id="search_results_table">
+	      {% for e in data %}
+	      <tr>
+		<td>{{ e.sim_id }}</td>
+		<td>{{ e.queue_method }}</td>
+		<td>{{ e.num_of_users }}</td>
+		<td>{{ e.contents_size }}</td>
+		<td>{{ e.planning_cycle }}</td>
+		<td>{{ e.user_act_span }}</td>
+		<td>{{ e.scale }}</td>
+		<td>{{ e.num_of_areas }}</td>
+		<td>{{ e.owner }}</td>
+		<td>{{ e.status }}</td>
+		<td>{{ e.progress }}</td>
+		<td><button class="btn btn-primary" onclick="location.href='/result_viewer/{{ e.sim_id }}'">View</button></td>
+	      </tr>
+	      {% endfor %}
 	    </tbody>
 	  </table>
-
-	  <h4><span class="label label-default">Data Frames</span></h4>
-	  <table class="table table-condensed">
-	    {% for item in data %}
-	    <tr>
-	      <td><a href="#" onclick="get_df_sample({{ item.id }})">{{ item.name }}</a></td>
-	      <td>
-		<select id="selected_item_{{ item.id }}" class="form-control">
-		  {% for item in item.columns %}
-		  <option value="{{ item }}">{{ item }}</option>
-		  {% endfor %}
-		</select>
-	      </td>
-
-	      <td><button onclick="make_series_for_chart({{ item.id }})" class="btn">Use</button></td>
-	    </tr>
-	    {% endfor %}
-	  </table>
-	</div>
-	<div class="col-md-7">
-	  <h4><span class="label label-default">Chart</span></h4>
-	  <div id="chart"></div>
-	  <br />
-	  <h4><span class="label label-default">Chart Definition</span></h4>
-	  <textarea class="form-control" id="c3json" rows="15">
-{
-   "x": "s1",
-    "columns": [
-      ["s1",0,1,2,3,4,5,6,7],
-      ["s2",4,5,7,3,1,4,6,7]
-    ],
-    "type":"scatter"
-}
-
-	  </textarea>
-	  <br />
-<!--	  <button class="btn btn-primary" onclick="draw_chart_from_def()">Show Chart</button> -->
-	  <button class="btn btn-primary" onclick="draw_chart()">Show Chart</button>
-
 	</div>
       </div><!-- /.row -->
     </div><!-- /.container -->
+{% endblock %}
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
-    <script src="{{ STATIC_URL }}bs/js/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}js/d3.min.js"></script>
-    <script src="{{ STATIC_URL }}js/c3.min.js"></script>
-    <script src="{{ STATIC_URL }}js/analyzer/index.js"></script>
-
-  </body>
-</html>
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/result_manager/index.js"></script>
+{% endblock %}

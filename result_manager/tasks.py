@@ -69,7 +69,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
 
     ## very poor implementation because these worker tasks 
     ## are seperated from the simulation program "mbs". 
-    
+    ## Simulation ID will be acquired from the log string.
     sim_id = ""
     if ext_code == 0:
         # mbs is successfully completed.
@@ -83,8 +83,12 @@ def exec_d2xp_mbs(conf, scale, num_area):
     
     result['sim_id'] = sim_id
     task_id = exec_d2xp_mbs.request.id
+
+    ## create and issue a task for retrieving the simulation result.
+    ## this task will be got by main worker on GUI with MySQL Server
     r = retrieve_mbs_result.apply_async(args=[task_id], queue='MAIN')
 
+    ## store the simulation result. the result will be stored in broker (RabbitMQ)
     return json.dumps(result)
 
 @task
@@ -111,3 +115,4 @@ def retrieve_mbs_result(target_task_id):
     else:
         sr.sim_id = "NO SIM_ID (FAILED)"
         sr.save()
+
