@@ -19,6 +19,7 @@
 |python-redis|2.9.1|
 |celery|3.1.16|
 |(django-celery)|3.1.16|
+|fabric||
 |MySQL|5.5.38-0ubuntu0.12.04.1|
 |mongodb|2.0.4|
 |RabbitMQ|3.2.4|

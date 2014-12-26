@@ -30,6 +30,7 @@ def index(request):
         config = json.loads(e.config)
         
         res = {
+            "id": e.id,
             "name": e.name,
             "sim_id": e.sim_id,
             "db_host": mdbhost.name,
@@ -68,6 +69,7 @@ def search_results(request):
             config = json.loads(e.config)
 
             res = {
+                "id": e.id,
                 "name": e.name,
                 "sim_id": e.sim_id,
                 "db_host": mdbhost.name,
@@ -99,6 +101,16 @@ def search_results(request):
     return HttpResponse(json_str, content_type='application/json')
 
     
+def delete_sim_result(request, sim_id):
+    sr = SimulationResult.objects.filter(sim_id__exact=sim_id)
+    if len(sr) > 0:
+        pass
+    
+    else:
+        pass
+
+    return HttpResponseRedirect('/')
+
     
 @login_required
 def exec_index(request):

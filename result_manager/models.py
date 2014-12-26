@@ -24,4 +24,4 @@ class SimulationResult(models.Model):
     owner = models.ForeignKey(User)
 
     def __unicode__(self):
-        return u'%s' % self.name
+        return u'%s (%s)' % (self.sim_id, self.task_id)

@@ -55,6 +55,9 @@
 	    {% endblock %}
 	    {% block menubar-viewer %}
 	    <li><a href="#">Viewer</a></li>
+	    {% endblock %}
+	    
+	    <!--
             <li class="dropdown">
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analyzer</a>
 	      <ul class="dropdown-menu" role="menu">
@@ -62,7 +65,7 @@
 		<li><a href="/series_manager/">Data Frame Manager</a></li>
 	      </ul>
 	    </li>
-	    {% endblock %}
+	    -->
 	    {% block menubar-execution %}
             <li><a href="/exec/">Execution</a></li>
 	    {% endblock %}
@@ -73,6 +76,16 @@
 		<li><a href="#">Register Host</a></li>
 		<li><a href="#">Register Result Source</a></li>
 		<li><a href="#">Register Result</a></li>
+	      </ul>
+	    </li>
+	    {% endblock %}
+	    {% block menubar-worker %}
+            <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Worker</a>
+	      <ul class="dropdown-menu" role="menu">
+		<li><a href="#">Worker Overview</a></li>
+		<li><a href="http://hydrangea.png.flab.fujitsu.co.jp:5555/" target="_blank">Task View (Celery Flower)</a></li>
+		<li><a href="http://dahlia.png.flab.fujitsu.co.jp/zabbix/overview.php?sid=659210558cba52dc&form_refresh=1&groupid=14&application=&type=1" target="_blank">Worker Status Detail (Zabbix)</a></li>
 	      </ul>
 	    </li>
 	    {% endblock %}

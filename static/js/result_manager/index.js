@@ -48,7 +48,7 @@ function show_search_results(data) {
     $("#search_results_table").empty();
     str = ""
     for (var i=0; i < data.length; i++) {
-	str += "<tr><td id='" + i + "_name'>" + data[i].name + 
+	str += "<tr><td id='" + i + "_sim_id'>" + data[i].sim_id + 
 	    "</td><td id='" + i + "_db_host'>" + data[i].db_host + 
 	    "</td><td id='" + i + "_db_port'>" + data[i].db_port +
 	    "</td><td id='" + i + "_db_name'>" + data[i].db_name +

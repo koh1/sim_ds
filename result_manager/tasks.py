@@ -50,10 +50,11 @@ def exec_d2xp_mbs(conf, scale, num_area):
     area_def_file = "conf/area_info_%d_area%d.csv" % (scale, num_area)
 
     cdir = "/home/vagrant/message_simulator"
-    cmd = "python d2xp_sim_system.py config.yml %s %s %s %s" % (rt_conf_file, 
-                                                                nd_spec_file,
-                                                                nw_def_file,
-                                                                area_def_file)
+    cmd = "python d2xp_sim_system.py config_%s.yml %s %s %s %s" % (conf_pst_fix,
+                                                                   rt_conf_file, 
+                                                                   nd_spec_file,
+                                                                   nw_def_file,
+                                                                   area_def_file)
 
     p = subprocess.Popen(cmd, cwd=cdir, shell=True,
                          stdin=subprocess.PIPE,
@@ -106,6 +107,7 @@ def exec_mbs():
 def retrieve_mbs_result(target_task_id):
     r = AsyncResult(target_task_id)
     sr = SimulationResult.objects.get(task_id__exact=target_task_id)
+#    sr = SimulationResult.objects.get(sim_id__exact=r['sim_id'])
     result = json.loads(r.result)
     
     if result['exit_code'] == 0:

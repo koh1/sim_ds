@@ -26,7 +26,7 @@
     <div class="col-md-12">
       <table class="table">
 	<thead>
-	  <tr><th>SIM ID</th><th>Q</th><th>users</th><th>c_size</th><th>plan cycle</th><th>user cycle</th><th>scale</th><th>areas</th><th>owner</th><th>status</th><th>%</th></tr>
+	  <tr><th>SIM ID</th><th>Q</th><th>users</th><th>c_size</th><th>plan cycle</th><th>user cycle</th><th>scale</th><th>areas</th><th>owner</th><th>status</th><th>%</th><th></th><th></th></tr>
 	    </thead>
 	    <tbody id="search_results_table">
 	      {% for e in data %}
@@ -43,6 +43,7 @@
 		<td>{{ e.status }}</td>
 		<td>{{ e.progress }}</td>
 		<td><button class="btn btn-primary" onclick="location.href='/result_viewer/{{ e.sim_id }}'">View</button></td>
+		<td><button class="btn btn-danger" onclick="location.href='/delete_sim_result/{{ e.id }}'">Delete</button></td>
 	      </tr>
 	      {% endfor %}
 	    </tbody>
