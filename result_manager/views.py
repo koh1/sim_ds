@@ -100,12 +100,11 @@ def search_results(request):
 
     return HttpResponse(json_str, content_type='application/json')
 
-    
-def delete_sim_result(request, sim_id):
-    sr = SimulationResult.objects.filter(sim_id__exact=sim_id)
-    if len(sr) > 0:
-        pass
-    
+@login_required
+def delete_sim_result(request, pkid):
+    sr = SimulationResult.objects.filter(id__exact=pkid)
+    if len(sr) == 1:
+        sr[0].delete()
     else:
         pass
 

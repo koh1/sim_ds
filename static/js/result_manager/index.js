@@ -62,3 +62,4 @@ function show_search_results(data) {
     $("#search_results_table").append(str);
 }
 
+
