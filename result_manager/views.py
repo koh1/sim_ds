@@ -146,8 +146,9 @@ def exec_process(request):
     if len(mdb_hosts) == 0:
         mdb_host = Host(name=bconf['store_mongo_db']['host'],
                         ipaddr=bconf['store_mongo_db']['host'],
-                        if_worker = False,
-                        if_result_store = True)
+#                        if_worker = False,
+#                        if_result_store = True
+                        )
         mdb_host.save()
         mdb_host_id = mdb_host.id
     else:
@@ -193,4 +194,10 @@ def exec_process(request):
             'scale': request.POST['scale'],
             'noarea': request.POST['noarea'],
             })
+    return HttpResponse(t.render(c))
+
+
+def view_index(request):
+    t = loader.get_template('result_manager/result_view.html')
+    c = RequestContext(request, {})
     return HttpResponse(t.render(c))

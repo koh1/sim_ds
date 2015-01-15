@@ -12,7 +12,6 @@ import pymongo
 class ResultSourceMongodb(models.Model):
     host = models.ForeignKey(Host)
     port = models.IntegerField()
-    
 
     def get_mongo_connection(self):
         conn = pymongo.Connection(self.host.ipaddr, int(self.port))

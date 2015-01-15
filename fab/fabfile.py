@@ -1,42 +1,81 @@
-from fabric.api import run, sudo, cd, lcd, local, put, prompt
+from fabric.api import run, sudo, cd, lcd, local, put, prompt, env
 from fabric.contrib import files
+
 
 def setup_worker_node():
     pass
 
-def setup_worker_proxy():
+def setup_worker_01_fnet_ubuntu(apt_proxy_file="", env_proxy_file="", resolvconf=""):
+    put(apt_proxy_file, '/etc/apt/apt.conf', use_sudo=True)
+    put(env_proxy_file, '/etc/profile.d/fnet.sh', use_sudo=True)
+    put(resolvconf, '/etc/resolvconf/resolv.conf.d/base', use_sudo=True)
+    sudo("service resolvconf restart")
 
+def setup_worker_01_fnet_centos():
+    pass
 
-def setup_worker_pyenv():
-    sudo("apt-get install git")
-    sudo("apt-get install build-essential")
-    sudo("apt-get install libsqlite3-dev")
-    sudo("apt-get install sqlite3")
-    sudo("apt-get install bzip2 libbz2-dev")
-    sudo("apt-get install libssl-dev openssl")
-    sudo("apt-get install libreadline6 libreadline6-dev")
+def setup_worker_02_install_required_apt():
+    ## for pyenv
+    sudo("apt-get -y install git")
+    sudo("apt-get -y install build-essential")
+    sudo("apt-get -y install libsqlite3-dev")
+    sudo("apt-get -y install sqlite3")
+    sudo("apt-get -y install bzip2 libbz2-dev")
+    sudo("apt-get -y install libssl-dev openssl")
+    sudo("apt-get -y install libreadline6 libreadline6-dev")
+
+    ## for scipy
+    sudo("apt-get -y install libblas-dev gfortran liblapack-dev")
+
+    ## for matplotlib
+
+def setup_worker_02_install_required_yum():
+    sudo("yum install readline readline-devel")
+    sudo("yum install gcc gcc-c++ make git openssl-devel")
+    sudo("yum install bzip2-devel zlib-devel")
+    sudo("yum install sqlite-devel")
+    sudo("yum install readline readline-devel")
+
+def setup_worker_03_pyenv():
     cd('~')
     run("git clone https://github.com/yyuu/pyenv.git .pyenv")
-    run("echo 'export PYENV_ROOT=\"$HOME/.pyenv\"' >> ~/.bashrc")
-    run("echo 'export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> ~/.bashrc")
+    run("echo 'export PYENV_ROOT=\"$HOME/.pyenv\"' >> ~/.bash_profile")
+    run("echo 'export PATH=\"$PYENV_ROOT/bin:$PATH\"' >> ~/.bash_profile")
     run("echo 'eval \"$(pyenv init -)\"' >> ~/.bash_profile")
-    run("exec $SHELL")
 
 
-def setup_worker_install_pyenv_python(version="2.7.9"):
+def setup_worker_04_install_pyenv_python(version="2.7.9"):
     run("pyenv install %s" % version)
     run("pyenv rehash")
     run("pyenv global %s" % version)
 
 
-def deploy_mbs(repo=""):
+def setup_worker_05_pythonlib():
+    run("pip install numpy")
+    run("pip install pymongo")
+    run("pip install redis")
+    run("pip install django")
+    run("pip install celery")
+    run("pip install django-celery")
+
+    ## needs additional libraries
+    run("pip install scipy")
+
+    run("pip install pandas")
+
+    ## needs additional libraries
+    run("pip install matplotlib")
+
+
+
+def setup_worker_06_mbs(repo=""):
     if repo == "":
         repo = prompt("MBS repository?: ")
         
     cd('~')
     run("git clone %s message_simulator" % repo)
 
-def deploy_worker(repo=""):
+def setup_worker_07_worker(repo=""):
     if repo == "":
         repo = prompt("worker repository?: ")
     
@@ -53,7 +92,8 @@ def deploy_sshkey(ssh_key=""):
         ssh_key = prompt("Specify ssh public key file:" )
     
     if files.exists('~/.ssh/id_rsa.pub'):
-        
+        return
+
     put(ssh_key, '~/.ssh/id_rsa.pub')
     run('cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys')
     run('chmod 600 ~/.ssh/authorized_keys')

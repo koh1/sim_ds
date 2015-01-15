@@ -4,8 +4,18 @@ from django.db import models
 class Host(models.Model):
     name = models.CharField(max_length=256)
     ipaddr = models.IPAddressField()
-    if_worker = models.BooleanField()
-    if_result_store = models.BooleanField()
     
+
     def __unicode__(self):
         return u'%s' % self.name
+
+
+class Worker(models.Model):
+    host = models.ForeignKey(Host)
+
+    login_id = models.CharField(max_length=256)
+    login_password = models.CharField(max_length=256)
+    ssh_key = models.CharField(max_length=8192)
+    
+    def __unicode__(self):
+        return u'%s' % self.host.name
