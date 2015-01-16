@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% block menubar-viewer %}
+<li class="active"><a href="/view/">Viewer</a></li>
+{% endblock %}
+
+{% block contents %}
+<div class="container">
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+      <div id="system_view"/>
+    </div>
+  </div><!-- /.row -->
+</div><!-- /.container -->
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
+<script src="{{ STATIC_URL }}js/d3.min.js"></script>
+<script src="{{ STATIC_URL }}js/result_manager/view.js"></script>
+{% endblock %}
