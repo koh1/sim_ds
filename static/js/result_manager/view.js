@@ -1,4 +1,4 @@
-$(function() {
+window.onload = function() {
 
 var data = {
     name:"root",
@@ -23,10 +23,10 @@ var data = {
     ]
 }
 
-var svgWidth = 320;
-var svgHeight = 240;
-var offsetY = 10;
-    var svg = d3.selectAll("body").append("svg")
+    var svgWidth = 320;
+    var svgHeight = 240;
+    var offsetY = 10;
+    var svg = d3.select("#system_view").append("svg")
 	.attr({
 	    "width":svgWidth,
 	    "height": svgHeight
@@ -42,7 +42,7 @@ svg.selectAll("path")
     .append("path")
     .attr("d", d3.svg.diagonal())
     .attr("fill", "none")
-    .attr("stroke", "#aaa")
+    .attr("stroke", "#ff9999")
     .attr("stroke-width", 1)
     .attr("transform", "translate(0, " + offsetY + ")");
 
@@ -53,7 +53,7 @@ svg.selectAll("circle")
     .attr("cx", function(d){return d.x})
     .attr("cy", function(d){return d.y + offsetY})
     .attr("r", 5)
-    .style("stroke", "#")
-    .style("fill", "white");
+    .style("stroke", "white")
+    .style("fill", "#ff9999");
 
-});
+};

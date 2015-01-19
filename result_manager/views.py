@@ -37,6 +37,8 @@ def index(request):
             "db_port": mdb.port,
             "db_name": e.db_name,
             "owner": e.owner.username,
+            "status": e.task_status,
+            "progress": e.task_progress,
             "num_of_users": config['num_of_users'],
             "num_of_contents": config['contents']['num_of_contents'],
             "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
@@ -198,6 +200,11 @@ def exec_process(request):
 
 
 def view_index(request):
-    t = loader.get_template('result_manager/result_view.html')
+    t = loader.get_template('result_manager/view_index.html')
+    c = RequestContext(request, {})
+    return HttpResponse(t.render(c))
+
+def view_detail(request):
+    t = loader.get_template('result_manager/view_detail.html')
     c = RequestContext(request, {})
     return HttpResponse(t.render(c))

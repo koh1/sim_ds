@@ -113,8 +113,12 @@ def retrieve_mbs_result(target_task_id):
     if result['exit_code'] == 0:
         ## success
         sr.sim_id = result['sim_id']
+        sr.task_progress = 100
+        sr.task_status = "SUCCESS"
         sr.save()
     else:
         sr.sim_id = "NO SIM_ID (FAILED)"
+        sr.task_status = "FAILED"
+        sr.task_progress = 0
         sr.save()
 

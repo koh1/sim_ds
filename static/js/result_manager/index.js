@@ -49,15 +49,19 @@ function show_search_results(data) {
     str = ""
     for (var i=0; i < data.length; i++) {
 	str += "<tr><td id='" + i + "_sim_id'>" + data[i].sim_id + 
-	    "</td><td id='" + i + "_db_host'>" + data[i].db_host + 
-	    "</td><td id='" + i + "_db_port'>" + data[i].db_port +
-	    "</td><td id='" + i + "_db_name'>" + data[i].db_name +
-	    "</td><td id='" + i + "_sim_id'>" + data[i].sim_id + 
-	    "</td><td>" + 
-	    "<button class='btn btn-primary' onclick='location.href=\"/result_viewer/" + data[i].sim_id + "/\"'>View</button>" + 
-	    "</td><td></tr>";
-
-//	    "<button class='btn btn-primary' onclick='/analyzer/" + data[i].sim_id + "/'>select</button></td></tr>";
+	    "</td><td id='" + i + "_queue_method'>" + data[i].queue_method + 
+	    "</td><td id='" + i + "_num_of_users'>" + data[i].num_of_users +
+	    "</td><td id='" + i + "_contents_size'>" + data[i].contents_size +
+	    "</td><td id='" + i + "_planning_cycle'>" + data[i].planning_cycle + 
+	    "</td><td id='" + i + "_user_act_span'>" + data[i].user_act_span + 
+	    "</td><td id='" + i + "_scale'>" + data[i].scale + 
+	    "</td><td id='" + i + "_num_of_areas'>" + data[i].num_of_areas + 
+	    "</td><td id='" + i + "_owner'>" + data[i].owner + 
+	    "</td><td id='" + i + "_status'>" + data[i].status + 
+	    "</td><td id='" + i + "_progress'>" + data[i].progress + 
+	    "</td><td><button class='btn btn-primary' onclick='location.href=\"/detail_view/" + data[i].id + "/\"'>View</button>" + 
+	    "</td><td><button class='btn btn-danger' onclick='location.href=\"/delete_sim_result/" + data[i].id + "\"'>Delete</button>" +
+	    "</td></tr>";
     }
     $("#search_results_table").append(str);
 }
