@@ -59,7 +59,7 @@ function show_search_results(data) {
 	    "</td><td id='" + i + "_owner'>" + data[i].owner + 
 	    "</td><td id='" + i + "_status'>" + data[i].status + 
 	    "</td><td id='" + i + "_progress'>" + data[i].progress + 
-	    "</td><td><button class='btn btn-primary' onclick='location.href=\"/detail_view/" + data[i].id + "/\"'>View</button>" + 
+	    "</td><td><button class='btn btn-primary' onclick='location.href=\"/view_detail_config/" + data[i].id + "/\"'>View</button>" + 
 	    "</td><td><button class='btn btn-danger' onclick='location.href=\"/delete_sim_result/" + data[i].id + "\"'>Delete</button>" +
 	    "</td></tr>";
     }

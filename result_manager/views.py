@@ -176,7 +176,7 @@ def exec_process(request):
                           sim_id = "",
                           name = "",
                           task_id = "",
-                          task_status = "",
+                          task_status = "STARTED",
                           task_progress = 0,
                           config = json.dumps(bconf),
                           owner = User.objects.get(id=request.user.id))
@@ -204,7 +204,9 @@ def view_index(request):
     c = RequestContext(request, {})
     return HttpResponse(t.render(c))
 
-def view_detail(request):
-    t = loader.get_template('result_manager/view_detail.html')
-    c = RequestContext(request, {})
+def view_detail_config(request, pkid):
+    sr = SimulationResult.objects.get(id=pkid)
+    t = loader.get_template('result_manager/view_detail_config.html')
+    c = RequestContext(request, {
+            })
     return HttpResponse(t.render(c))

@@ -8,12 +8,12 @@
 <div class="container">
   <br />
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <form method="post" action="/exec_process" role="form" enctype="multipart/form-data">
 	{% csrf_token %}
 	<div class="form-group">
 	  <label for="bconffile">Basic configuration file</label>
-	  <input type="file" class="form-control" id="bconffile" name="bconffile" />
+	  <input type="file" class="form-control" id="bconffile" name="bconffile" onchange="config_file_selected(this);"/>
 	</div>
 	<div class="form-group">
 	  <label for="scale">scale</label>
@@ -31,8 +31,19 @@
 	</div>
 	<input type="submit" value="add simulation task" class="btn btn-primary" />
       </form>
+    </div><!-- col-md-4 -->
+    <div class="col-md-9">
+      <div id="topology_svg"></div>
+      <div id="configurations"></div>
     </div>
-  </div>
-</div>
+  </div><!-- row -->
+</div><!-- contailer -->
 {% endblock %}
+
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/result_manager/exec.js"></script>
+<script src="{{ STATIC_URL }}js/d3.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
+{% endblock %}
+
 
