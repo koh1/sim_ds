@@ -33,8 +33,20 @@
       </form>
     </div><!-- col-md-4 -->
     <div class="col-md-9">
-      <div id="topology_svg"></div>
-      <div id="configurations"></div>
+      <div class="row">
+	<div class="col-md-9">
+	  <div id="topology_svg"></div>
+	</div>
+      </div>
+      <div class="row">
+	<div class="col-md-9">
+	  <table class="table">
+	    <thead><tr><th>item</th><th>value</th></tr></thead>
+	    <tbody id="configurations"></tbody>
+	    
+	  </table>
+	</div>
+      </div>
     </div>
   </div><!-- row -->
 </div><!-- contailer -->
@@ -43,6 +55,7 @@
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/result_manager/exec.js"></script>
 <script src="{{ STATIC_URL }}js/d3.min.js"></script>
+<script src="{{ STATIC_URL }}js/js-yaml.min.js"></script>
 <script src="{{ STATIC_URL }}js/jquery-1.11.1.min.js"></script>
 {% endblock %}
 

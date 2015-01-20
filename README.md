@@ -23,6 +23,9 @@
 |MySQL|5.5.38-0ubuntu0.12.04.1|
 |mongodb|2.0.4|
 |RabbitMQ|3.2.4|
+|jQuery||
+|d3.js||
+|[js-yaml](https://github.com/nodeca/js-yaml.git)||
 
 
 ### 1.2. 環境構築

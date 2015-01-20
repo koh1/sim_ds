@@ -1,4 +1,42 @@
 window.onload = function() {
+    var svgWidth = 320;
+    var svgHeight = 240;
+    var offsetY = 10;
+    var svg = d3.select("body").append("svg")
+	.attr({
+	    "width":svgWidth,
+	    "height": svgHeight
+	});
+
+    var circles = svg.selectAll("circle")
+	.data([10, 12, 14])
+	.enter()
+	.append("circle");
+
+    circles.style("fill", "steelblue");
+    circles.attr("stroke", "white");
+    circles.attr("cx", function(d, i) {return (i*50) + 25});
+    circles.attr("cy", 90);
+    circles.attr("r",function(d) {return d});
+    
+    
+    
+
+    var rects = svg.selectAll("rest")
+	.data([10,20,15,30,22])
+	.enter()
+	.append("rect");
+
+    rects.style("fill", "#aa2222");
+    rects.attr("stroke", "white");
+    rects.attr("x", function(d, i) {return (i*50)+50});
+    rects.attr("y", 120);
+    rects.attr("width", function(d) {return d});
+    rects.attr("height", function(d) {return d});
+
+
+
+};
 
 var data = {
     name:"root",
@@ -56,4 +94,3 @@ svg.selectAll("circle")
     .style("stroke", "white")
     .style("fill", "#ff9999");
 
-};
