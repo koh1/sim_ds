@@ -1,7 +1,6 @@
 from fabric.api import run, sudo, cd, lcd, local, put, prompt, env
 from fabric.contrib import files
 
-
 def setup_worker_node():
     pass
 
@@ -57,6 +56,8 @@ def setup_worker_05_pythonlib():
     run("pip install numpy")
     run("pip install pymongo")
     run("pip install redis")
+    run("pip install PyYAML")
+    run("pip install python-mysql")
     run("pip install django")
     run("pip install celery")
     run("pip install django-celery")
@@ -92,6 +93,9 @@ def setup_worker_07_worker(repo="", branch=""):
         cd("message_simulator_gui")
         run("git checkout %s" % branch)
 
+def setup_worker_08_configure_worker(broker_url=""):
+    pass
+
 def start_worker():
     cd('~/message_simulator_gui')
     run("celery -A sim_dashboard worker -l info")
@@ -109,6 +113,6 @@ def deploy_sshkey(ssh_key=""):
     run('chmod 600 ~/.ssh/authorized_keys')
     
 
-
+    
 
 

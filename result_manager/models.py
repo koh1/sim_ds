@@ -31,6 +31,8 @@ class SimulationResult(models.Model):
     task_progress = models.IntegerField()
     config = models.TextField()
     owner = models.ForeignKey(User)
+    description = models.TextField()
+    tags = models.TextField()
 
     def __unicode__(self):
         return u'%s (%s)' % (self.sim_id, self.task_id)

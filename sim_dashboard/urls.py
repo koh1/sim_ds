@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^view/$', 'result_manager.views.view_index'),
 
     url(r'^exec_process$', 'result_manager.views.exec_process'),
-    url(r'^view_detail_config/(?P<pkid>\w+)/$', 'result_manager.views.view_detail_config'),
+    url(r'^view_detail/(?P<pkid>\w+)/$', 'result_manager.views.view_detail'),
     url(r'^delete_sim_result/(?P<pkid>\w+)/$', 'result_manager.views.delete_sim_result'),
     url(r'^search_results/$', 'result_manager.views.search_results'),
 #    url(r'^/main/get_topology_data/(?P<db_name>\w+)/(?P<coll_name>/w+)/$', 'main.views.get_topology_data'),

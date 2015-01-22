@@ -6,18 +6,41 @@
 
 {% block contents %}
 <div class="container">
+  <h3><span class="label label-primary">{{ sim_id }}</span></h3>
   <br />
   <div class="row">
     <div class="col-md-12">
-      <div id="topology_svg"/>
-    </div>
-  </div><!-- /.row -->
-  <div class="row">
-    <div class="col-md-12">
-      <table class="table">
-	<thead><tr><th>item</th><th>value</th></tr></thead>
-	<tbody id="configurations"></tbody>
-      </table>
+      <div class="accordion-group panel panel-default">
+	<div class="accordion-heading panel-heading">
+	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#results" href="#topology_svg">Topology</a>
+	</div>
+	<div id="topology_svg" class="accordion-body panel-body collapse">
+	  <div id="svg_canvas"></div>
+	</div>
+      </div>
+      <div class="accordion-group panel panel-default">
+	<div class="accordion-heading panel-heading">
+	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#results" href="#analysis">Quick Analysis</a>
+	</div>
+	<div id="analysis" class="accordion-body panel-body collapse">
+	  analysis controllers are here...
+	</div>
+      </div>
+      <div class="accordion-group panel panel-default">
+	<div class="accordion-heading panel-heading">
+	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#results" href="#config_table">Configurations</a>
+	</div>
+	<div id="config_table" class="accordion-body panel-body collapse">
+	  <table class="table">
+	    <thead><tr><th>item</th><th>value</th></tr></thead>
+	    <tbody id="configurations">
+	      {% for k,v in config.items %}
+	      <tr><td>{{ k }}</td><td>{{ v }}</tr>
+	      {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+      </div>
     </div>
   </div><!-- /.row -->
 </div><!-- /.container -->

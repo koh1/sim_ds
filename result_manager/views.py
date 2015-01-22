@@ -204,11 +204,15 @@ def view_index(request):
     c = RequestContext(request, {})
     return HttpResponse(t.render(c))
 
-def view_detail_config(request, pkid):
+def view_detail(request, pkid):
     sr = SimulationResult.objects.get(id=pkid)
     t = loader.get_template('result_manager/view_detail.html')
     db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
+    config = json.loads(sr.config)
     c = RequestContext(request, {
+            "id": sr.id,
+            "sim_id": sr.sim_id,
+            "config": config,
             })
     return HttpResponse(t.render(c))
 
