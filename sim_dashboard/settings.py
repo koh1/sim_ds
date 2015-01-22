@@ -148,7 +148,7 @@ BROKER_URL="amqp://guest:guest@172.16.51.11:5672/"
 #BROKER_PASSWORD = "guest"
 #BROKER_VHOST = "/"
 CELERY_RESULT_BACKEND = "amqp"
-CELERY_ACCEPT_CONTENT = ['json', 'yaml']
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'yaml']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

@@ -14,6 +14,7 @@ import yaml
 import json
 import subprocess
 import datetime
+import time
 
 
 class AddTask(Task):
@@ -107,9 +108,15 @@ def exec_mbs():
 
 @task
 def retrieve_mbs_result(target_task_id):
+    logger = Task.get_logger()
     r = AsyncResult(target_task_id)
     sr = SimulationResult.objects.get(task_id__exact=target_task_id)
 #    sr = SimulationResult.objects.get(sim_id__exact=r['sim_id'])
+    logger.info(r)
+
+    while not r.ready():
+        time.sleep(0.1)
+
     result = json.loads(r.result)
     
     if result['exit_code'] == 0:
