@@ -64,10 +64,10 @@ def exec_d2xp_mbs(conf, scale, num_area):
     ext_code = p.wait()
     result = {}
     result['exit_code'] = ext_code
-#    result['stdout'] = p.stdout.readlines()
-    result['stdout'] = r"%s" % p.stdout
-#    result['stderr'] = p.stderr.readlines()
-    result['stderr'] = r"%s" % p.stderr
+    result['stdout'] = p.stdout.readlines()
+#    result['stdout'] = r"%s" % p.stdout
+    result['stderr'] = p.stderr.readlines()
+#    result['stderr'] = r"%s" % p.stderr
     logger.info(json.dumps(result, sort_keys=True, indent=2))
 
     ## very poor implementation because these worker tasks 
