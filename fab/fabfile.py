@@ -14,6 +14,9 @@ def setup_worker_01_fnet_centos():
     pass
 
 def setup_worker_02_install_required_apt():
+    ## for mbs
+    sudo("apt-get -y install redis-server")
+    
     ## for pyenv
     sudo("apt-get -y install git")
     sudo("apt-get -y install build-essential")
@@ -50,6 +53,7 @@ def setup_worker_04_install_pyenv_python(version="2.7.9"):
     run("pyenv install %s" % version)
     run("pyenv rehash")
     run("pyenv global %s" % version)
+    run("pyenv rehash")
 
 
 def setup_worker_05_pythonlib():
@@ -93,12 +97,19 @@ def setup_worker_07_worker(repo="", branch=""):
         cd("message_simulator_gui")
         run("git checkout %s" % branch)
 
+def setup_worker_10_update_worker(repo_dir=""):
+    if repo_dir == "":
+        repo_dir = prompt("local repository directory?: ")
+
+    cd(repo_dir)
+    run("git pull origin master")
+
 def setup_worker_08_configure_worker(broker_url=""):
     pass
 
 def start_worker():
     cd('~/message_simulator_gui')
-    run("celery -A sim_dashboard worker -l info")
+    run("celery -A sim_dashboard worker -c 1 -l info")
 
 
 def deploy_sshkey(ssh_key=""):

@@ -48,7 +48,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
 
     ## area definitiion
     area_def_file = "conf/area_info_%d_area%d.csv" % (scale, num_area)
-
+    
     cdir = "%s/message_simulator" % os.environ['HOME']
     cmd = "python d2xp_sim_system.py config_%s.yml %s %s %s %s" % (conf_pst_fix,
                                                                    rt_conf_file, 
@@ -64,8 +64,10 @@ def exec_d2xp_mbs(conf, scale, num_area):
     ext_code = p.wait()
     result = {}
     result['exit_code'] = ext_code
-    result['stdout'] = p.stdout.readlines()
-    result['stderr'] = p.stderr.readlines()
+#    result['stdout'] = p.stdout.readlines()
+    result['stdout'] = p.stdout
+#    result['stderr'] = p.stderr.readlines()
+    result['stderr'] = p.stderr
     logger.info(json.dumps(result, sort_keys=True, indent=2))
 
     ## very poor implementation because these worker tasks 
