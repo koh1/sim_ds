@@ -28,6 +28,9 @@ def setup_worker_02_install_required_apt():
     sudo("apt-get -y install libblas-dev gfortran liblapack-dev")
 
     ## for matplotlib
+    sudo("apt-get -y install libpng12-0 libpng12-dev")
+    sudo("apt-get -y install libfreetype6 libfreetype6-dev")
+    
 
 def setup_worker_02_install_required_yum():
     sudo("yum install readline readline-devel")
@@ -68,19 +71,26 @@ def setup_worker_05_pythonlib():
 
 
 
-def setup_worker_06_mbs(repo=""):
+def setup_worker_06_mbs(repo="", branch=""):
     if repo == "":
         repo = prompt("MBS repository?: ")
         
     cd('~')
     run("git clone %s message_simulator" % repo)
+    if not branch == "":
+        cd("message_simulator")
+        run("git checkout %s" % branch)
+    
 
-def setup_worker_07_worker(repo=""):
+def setup_worker_07_worker(repo="", branch=""):
     if repo == "":
         repo = prompt("worker repository?: ")
     
     cd('~')
     run("git clone %s message_simulator_gui" % repo)
+    if not branch == "":
+        cd("message_simulator_gui")
+        run("git checkout %s" % branch)
 
 def start_worker():
     cd('~/message_simulator_gui')

@@ -45,7 +45,6 @@ function make_topology_proto(data) {
     var tree = d3.layout.tree().size([600,380]);
     var nodes = tree.nodes(data);
 
-
     svg.selectAll("path")
 	.data(tree.links(nodes))
 	.enter()

@@ -206,7 +206,18 @@ def view_index(request):
 
 def view_detail_config(request, pkid):
     sr = SimulationResult.objects.get(id=pkid)
-    t = loader.get_template('result_manager/view_detail_config.html')
+    t = loader.get_template('result_manager/view_detail.html')
+    db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
     c = RequestContext(request, {
             })
     return HttpResponse(t.render(c))
+
+def get_nwk_traffic(request, pkid, nwk_name):
+    sr = SimulationResult.objects.get(id=pkid)
+    db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
+    result = list(db["%s_nwk" % sr.sim_id].find({"nwk_name": nwk_name}).sort({"time": 1}))
+    return HttpResponse(json.dumps(result), mime_type='application/json')
+    
+    
+
+    

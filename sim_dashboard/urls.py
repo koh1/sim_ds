@@ -12,7 +12,9 @@ urlpatterns = patterns('',
     ## my applications
     url(r'^$', 'result_manager.views.index'),
     url(r'^exec/$', 'result_manager.views.exec_index'),
+    url(r'^view/get_nwk_traffic/(?P<pkid>\w+)/(?P<nwk_name>\w+)/$', 'result_manager.views.get_nwk_traffic'),
     url(r'^view/$', 'result_manager.views.view_index'),
+
     url(r'^exec_process$', 'result_manager.views.exec_process'),
     url(r'^view_detail_config/(?P<pkid>\w+)/$', 'result_manager.views.view_detail_config'),
     url(r'^delete_sim_result/(?P<pkid>\w+)/$', 'result_manager.views.delete_sim_result'),
