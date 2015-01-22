@@ -33,7 +33,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     logger = Task.get_logger()
 
     conf_pst_fix = datetime.datetime.today().strftime("%Y%m%d_%H%M%S")
-    fo = open("~/message_simulator/config_%s.yml" % (conf_pst_fix,) , "w")
+    fo = open("%s/message_simulator/config_%s.yml" % (os.environ['HOME'], conf_pst_fix,) , "w")
     fo.write(yaml.dump(conf))
     fo.close()
 
@@ -49,7 +49,7 @@ def exec_d2xp_mbs(conf, scale, num_area):
     ## area definitiion
     area_def_file = "conf/area_info_%d_area%d.csv" % (scale, num_area)
 
-    cdir = "~/message_simulator"
+    cdir = "%s/message_simulator" % os.environ['HOME']
     cmd = "python d2xp_sim_system.py config_%s.yml %s %s %s %s" % (conf_pst_fix,
                                                                    rt_conf_file, 
                                                                    nd_spec_file,
