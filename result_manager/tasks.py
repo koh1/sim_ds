@@ -122,6 +122,15 @@ def retrieve_mbs_result(target_task_id):
     if result['exit_code'] == 0:
         ## success
         sr.sim_id = result['sim_id']
+        
+        ## these are rewrite if you add log collections
+        sr.collections = json.dumps([
+                "%s_nwk" % sr.sim_id,
+                "%s_node" % sr.sim_id,
+                "%s_msg" % sr.sim_id,
+                "%s_usr" % sr.sim_id,
+                "%s_map" % sr.sim_id,
+                ])
         sr.task_progress = 100
         sr.task_status = "SUCCESS"
         sr.save()

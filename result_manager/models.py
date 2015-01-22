@@ -24,6 +24,7 @@ class ResultSourceMongodb(models.Model):
 class SimulationResult(models.Model):
     result_source_mongodb = models.ForeignKey(ResultSourceMongodb)
     db_name = models.CharField(max_length=256)
+    collections = models.TextField()
     sim_id = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
     task_id = models.CharField(max_length=36)
@@ -41,8 +42,7 @@ class SimulationResult(models.Model):
 @receiver(pre_delete, sender=SimulationResult)
 def simulation_result_pre_delete_signal(sender, instance, **kwargs):
     mdb = instance.result_source_mongodb.get_mongo_connection()[instance.db_name]
-    mdb['%s_nwk' % instance.sim_id].drop()
-    mdb['%s_node' % instance.sim_id].drop()
-    mdb['%s_usr' % instance.sim_id].drop()
-    mdb['%s_msg' % instance.sim_id].drop()
+    collections = json.loads(instance.collections)
+    for c in collections:
+        mdb[c].drop()
     mdb['configs'].remove({"simulation_id":instance.sim_id})

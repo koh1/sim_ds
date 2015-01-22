@@ -15,6 +15,8 @@ from main.models import Host
 import json
 import logging
 import yaml
+import pandas as pd
+import numbers
 
 
 logger = logging.getLogger('application')
@@ -173,13 +175,17 @@ def exec_process(request):
 
     sr = SimulationResult(result_source_mongodb = mdb,
                           db_name = bconf['store_mongo_db']['db'],
+                          collections = "",
                           sim_id = "",
                           name = "",
                           task_id = "",
                           task_status = "STARTED",
                           task_progress = 0,
                           config = json.dumps(bconf),
+                          description = "",
+                          tags = "",
                           owner = User.objects.get(id=request.user.id))
+    
     sr.save()
 
     r = exec_d2xp_mbs.delay(bconf, sys_scale, noarea)
@@ -208,19 +214,59 @@ def view_detail(request, pkid):
     sr = SimulationResult.objects.get(id=pkid)
     t = loader.get_template('result_manager/view_detail.html')
     db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
-    config = json.loads(sr.config)
     c = RequestContext(request, {
             "id": sr.id,
             "sim_id": sr.sim_id,
-            "config": config,
+            "collections": json.loads(sr.collections),
+            "config": json.loads(sr.config),
             })
     return HttpResponse(t.render(c))
+
+def get_collection_columns(request, pkid, collection_name):
+    sr = SimulationResult.objects.get(id=pkid)
+    db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
+    items = db[collection_name].find_one({},{"_id":0})
+    return HttpResponse(json.dumps(items), content_type='application/json')
+    
+
+def quick_look(request, pkid, collection_name, column_name):
+    sr = SimulationResult.objects.get(id=pkid)
+    db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
+    items = db[collection_name].find().limit(5)
+    return HttpResponse(json.dumps(items), content_type='application/json')
+    
+
+def get_statistics(request, pkid, collection_name, column_name):
+    sr = SimulationResult.objects.get(id=pkid)
+    db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
+    df = pd.DataFrame(list(db[collection_name].find()))
+    if len(df[column_name]) < 1:
+        ret = {"error": "There is no data."}
+        return HttpResponse(json.dumps(ret), content_type='application/json')
+    if isinstance(df[column_name][0], numbers.Number):
+        
+
+        result = {}
+        result['max'] = df[column_name].max()
+        result['min'] = df[column_name].min()
+        result['mean'] = df[column_name].mean()
+    #    result['median'] = df[column_name].median()
+        result['std'] = df[column_name].std()
+        result['25%'] = df[column_name].quantile(.25)
+        result['50%'] = df[column_name].quantile()
+        result['75%'] = df[column_name].quantile(.75)
+        result['95%'] = df[column_name].quantile(.95)
+        return HttpResponse(json.dumps(result), content_type='application/json')
+    else:
+        ret = {"error": "This column's datum are not numbers."}
+        return HttpResponse(json.dumps(ret), content_type='application/json')
+    
 
 def get_nwk_traffic(request, pkid, nwk_name):
     sr = SimulationResult.objects.get(id=pkid)
     db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
     result = list(db["%s_nwk" % sr.sim_id].find({"nwk_name": nwk_name}).sort({"time": 1}))
-    return HttpResponse(json.dumps(result), mime_type='application/json')
+    return HttpResponse(json.dumps(result), content_type='application/json')
     
     
 

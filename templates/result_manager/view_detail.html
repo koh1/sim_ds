@@ -23,7 +23,36 @@
 	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#results" href="#analysis">Quick Analysis</a>
 	</div>
 	<div id="analysis" class="accordion-body panel-body collapse">
-	  analysis controllers are here...
+	  <div class="row">
+	    <div class="col-md-3">
+	      <div class="form-group">
+		<label for="collections">Collection</label>
+		<select class="form-control" id="collection" name="collection" onchange="update_columns( {{ id }} )">
+		  {% for c in collections %}
+		  <option value= {{ c }} > {{ c }} </option>
+		  {% endfor %}
+		</select>
+	      </div>
+	      <div class="form-group">
+		<label for="columns">Columns</label>
+		<select class="form-control" id="columns" name="columns">
+		  
+		</select>
+	      </div>
+	      <button class="btn btn-primary" onclick="quick_look( {{ id }} )">quick look</button>
+	      <button class="btn btn-primary" onclick="get_statistics( {{ id }} )">stats</button>
+	      <button class="btn btn-primary" id="time_chart_btn" onclick="show_time_series_chart( {{ id }} )">time chart</button>
+	    </div>
+	    <div class="col-md-9">
+	      bbb
+	    </div>
+	  </div><!-- row -->
+	  <br />
+	  <div class="row">
+	    <div class="col-md-12">
+	      <textarea class="form-control" id="console" name="console" rows="10" disabled></textarea>
+	    </div>
+	  </div><!-- row -->
 	</div>
       </div>
       <div class="accordion-group panel panel-default">
@@ -51,4 +80,5 @@
 <script src="{{ STATIC_URL }}js/d3.min.js"></script>
 <script src="{{ STATIC_URL }}js/js-yaml.min.js"></script>
 <script src="{{ STATIC_URL }}js/result_manager/view.js"></script>
+<script src="{{ STATIC_URL }}js/result_manager/topology_view.js"></script>
 {% endblock %}

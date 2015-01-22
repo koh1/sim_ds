@@ -12,6 +12,12 @@ def convert_for_d3_make_children(parent, p_name, data):
         convert_for_d3_make_children(cobj["children"], c, data)
         parent.append(cobj)
 
+
+def convert_route_to_d3_topology():
+    root = "SW-L0-1-1"
+    
+    
+
 if __name__ == '__main__':
     import json
     import sys
