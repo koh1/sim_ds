@@ -60,10 +60,27 @@ function show_search_results(data) {
 	    "</td><td id='" + i + "_status'>" + data[i].status + 
 	    "</td><td id='" + i + "_progress'>" + data[i].progress + 
 	    "</td><td><button class='btn btn-primary' onclick='location.href=\"/view_detail/" + data[i].id + "/\"'>View</button>" + 
-	    "</td><td><button class='btn btn-danger' onclick='location.href=\"/delete_sim_result/" + data[i].id + "\"'>Delete</button>" +
+	    "</td><td><button class='btn btn-danger' onclick='delete_simulation_result(" + data[i].id + ")'>Delete</button>" +
 	    "</td></tr>";
     }
     $("#search_results_table").append(str);
 }
 
+function delete_simulation_result(pkid) {
+    if(window.confirm("This process will DELETE ALL RELATED DATA. Are you sure?")) {
+	var url = "/delete_sim_result/" + pkid + "/";
+	$.ajax({
+	    async: false,
+	    type: 'get',
+	    url: url,
+	    success: function(data) {
+		delete_simulation_result_view(data);
+	    }
+	});
+    } else {
+    }
+}
+function delete_simulation_result_view(data) {
+    location.reload();
+}
 

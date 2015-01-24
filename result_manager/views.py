@@ -5,13 +5,17 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.files import File
+from django.conf import settings
+
 
 from result_manager.models import SimulationResult
 from result_manager.models import ResultSourceMongodb
 from result_manager.tasks import exec_d2xp_mbs
 from main.models import Host
 
-
+import os
+import csv
 import json
 import logging
 import yaml
@@ -240,12 +244,12 @@ def get_statistics(request, pkid, collection_name, column_name):
     sr = SimulationResult.objects.get(id=pkid)
     db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
     df = pd.DataFrame(list(db[collection_name].find()))
+    ret = {"id": pkid, "sim_id": sr.sim_id}
     if len(df[column_name]) < 1:
-        ret = {"error": "There is no data."}
+        ret["data"] = {}
+        ret["error"] = "There is no data."
         return HttpResponse(json.dumps(ret), content_type='application/json')
     if isinstance(df[column_name][0], numbers.Number):
-        
-
         result = {}
         result['max'] = df[column_name].max()
         result['min'] = df[column_name].min()
@@ -256,10 +260,12 @@ def get_statistics(request, pkid, collection_name, column_name):
         result['50%'] = df[column_name].quantile()
         result['75%'] = df[column_name].quantile(.75)
         result['95%'] = df[column_name].quantile(.95)
-        return HttpResponse(json.dumps(result), content_type='application/json')
+        ret["data"] = result
+        ret["error"] = ""
     else:
-        ret = {"error": "This column's datum are not numbers."}
-        return HttpResponse(json.dumps(ret), content_type='application/json')
+        ret["data"] = {}
+        ret["error"] = "This column's datum are not numbers."
+    return HttpResponse(json.dumps(ret), content_type='application/json')
     
 
 def get_nwk_traffic(request, pkid, nwk_name):
@@ -270,4 +276,7 @@ def get_nwk_traffic(request, pkid, nwk_name):
     
     
 
+
+    
+    
     

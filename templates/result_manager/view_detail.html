@@ -12,10 +12,12 @@
     <div class="col-md-12">
       <div class="accordion-group panel panel-default">
 	<div class="accordion-heading panel-heading">
-	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#results" href="#topology_svg">Topology</a>
+	  <a class="accordion-toggle" data-toggle="collapse" data-parent="#results" href="#topology">Topology</a>
 	</div>
-	<div id="topology_svg" class="accordion-body panel-body collapse">
-	  <div id="svg_canvas"></div>
+	<div id="topology" class="accordion-body panel-body collapse">
+	  <div id="topology_svg"></div>
+	  <br />
+	  <button class="btn btn-primary" onclick="make_system_topology( {{ id }} )">Draw</button>
 	</div>
       </div>
       <div class="accordion-group panel panel-default">
@@ -44,13 +46,14 @@
 	      <button class="btn btn-primary" id="time_chart_btn" onclick="show_time_series_chart( {{ id }} )">time chart</button>
 	    </div>
 	    <div class="col-md-9">
-	      bbb
+	      <div id="chart_place"></div>
 	    </div>
 	  </div><!-- row -->
 	  <br />
 	  <div class="row">
 	    <div class="col-md-12">
-	      <textarea class="form-control" id="console" name="console" rows="10" disabled></textarea>
+	      <textarea class="form-control" id="console" name="console" rows="10" disabled></textarea><br />
+	      <button class="btn btn-primary" onclick="clear_console()">clear console</button>
 	    </div>
 	  </div><!-- row -->
 	</div>

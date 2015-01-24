@@ -27,6 +27,31 @@ $.ajaxSetup({
     }
 });
 
+
+var console_arry;
+var chart_svg;
+var topology_svg;
+$(function() {
+    if (localStorage.getItem("console_log") == null) {
+	localStorage.setItem("console_log", JSON.stringify([]));
+    }
+    console_arry = JSON.parse(localStorage.getItem("console_log"));
+    $("#console").val(console_arry.join('\n'));
+    
+    chart_svg = d3.select("#chart_place").append("svg")
+	.attr({
+	    "width": 800,
+	    "height": 400
+	});
+    topology_svg = d3.select("#topology_svg").append("svg")
+	.attr({
+	    "width": 1024,
+	    "height": 600
+	});
+    
+});
+
+
 function update_columns(pkid) {
     var c_name = $("#collection").val();
     var url = "/view/get_collection_columns/" + pkid + "/" + c_name + "/";
@@ -70,10 +95,31 @@ function get_statistics(pkid) {
     });
 }
 function get_statistics_view(data) {
-    var text = "";
-    for (var k in data) {
-	text += k + ": " + data[k] + "\n";
-    }
-    $("#console").val(text);
+    console_log(JSON.stringify(data));
 }
 
+function console_log(str) {
+    if (console_arry.length  > 19) {
+	console_arry.shift();
+    }
+    console_arry.push(str);
+    localStorage.setItem("console_log", JSON.stringify(console_arry));
+    $("#console").val(console_arry.join('\n'));
+}
+
+function clear_console() {
+    console_arry = []
+    $("#console").val(console_arry.join('\n'));
+    localStorage.setItem("console_log", JSON.stringify([]));
+}
+
+function get_topology_data(pkid) {
+}
+
+function make_system_topology(pkid) {
+    
+    alert(pkid);
+    get_topology_data(pkid);
+}
+function make_system_topology_view(data) {
+}
