@@ -1,10 +1,10 @@
 
 
 def convert_for_d3(data):
-    root = "SW-L0-1-1"
+    root = "SW-L1-1-1"
     tree = {"name": root,
             "children": []}
-    convert_for_d3_make_children(tree["children"], root, data)
+    convert_hash_for_d3_make_children(tree["children"], root, data)
     return tree
 
 def convert_for_d3_make_children(parent, p_name, data):
@@ -12,7 +12,12 @@ def convert_for_d3_make_children(parent, p_name, data):
         cobj = {"name": c, "children": []}
         convert_for_d3_make_children(cobj["children"], c, data)
         parent.append(cobj)
-
+def convert_hash_for_d3_make_children(parent, p_name, data):
+    for k,v in data[p_name]["children"].items():
+        print "node: %s" % k
+        cobj = {"name": k, "children": []}
+        convert_hash_for_d3_make_children(cobj["children"], k, data)
+        parent.append(cobj)
 
 def which_is_parent(o1, o2):
     if o1["type"] > o2["type"]:
@@ -33,8 +38,6 @@ def add_topology_entry(topology, entry):
     topology[entry["name"]]["name"] = entry["name"]
     topology[entry["name"]]["level"] = entry["level"]
     topology[entry["name"]]["children"] = {}
-    
-
 def get_topology_data_proto(csv_data):
     import numpy as np
 
@@ -55,7 +58,8 @@ def get_topology_data_proto(csv_data):
             elif v == 1:
                 topology[dst["name"]]["children"][src["name"]] = 1
             else:
-                pass
+                print("could not judge which is parent.")
+                sys.exit(1)
         elif len(row) == 3:
             mid = get_component_object(row[2])
             if not topology.has_key(mid["name"]):
@@ -72,7 +76,8 @@ def get_topology_data_proto(csv_data):
             elif v == 1:
                 topology[dst["name"]]["children"][mid["name"]] = 1
             else:
-                pass
+                print("could not judge which is parent.")
+                sys.exit(1)
         else:
             prev_via = src
             via = None
@@ -87,7 +92,8 @@ def get_topology_data_proto(csv_data):
                 elif v == 1:
                     topology[via["name"]]["children"][prev_via["name"]] = 1
                 else:
-                    pass
+                    print("could not judge which is parent.")
+                    sys.exit(1)
                 
                 prev_via = via
             
@@ -100,7 +106,8 @@ def get_topology_data_proto(csv_data):
             elif v == 1:
                 topology[dst["name"]]["children"][row_tail["name"]] = 1
             else:
-                pass
+                print("could not judge which is parent.")
+                sys.exit(1)
                 
     return topology
 
@@ -134,9 +141,12 @@ if __name__ == '__main__':
     
 #    topo_org = json.loads(open(p[1]).read())
     routing_csv = csv.reader(open(p[1]), delimiter=',')
-#    res = convert_for_d3(topo_org)
-    res = get_topology_data_proto(routing_csv)
-    
+    topo_hash = get_topology_data_proto(routing_csv)
+    f_hash = open("output_raw.json", 'w')
+    f_hash.write(json.dumps(topo_hash))
+    f_hash.close()
+    res = convert_for_d3(topo_hash)
+    print("%d entries" % len(res))
     f = open("outout.json", 'w')
     f.write(json.dumps(res))
     f.close()

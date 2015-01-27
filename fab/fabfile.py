@@ -97,6 +97,10 @@ def setup_worker_07_worker(repo="", branch=""):
         cd("message_simulator_gui")
         run("git checkout %s" % branch)
 
+    cd('~/message_simulator_gui')
+    run("mkdir log")
+    run("mkdir run")
+
 def setup_worker_10_update_worker(repo_dir=""):
     if repo_dir == "":
         repo_dir = prompt("local repository directory?: ")
@@ -109,7 +113,7 @@ def setup_worker_08_configure_worker(broker_url=""):
 
 def start_worker():
     cd('~/message_simulator_gui')
-    run("celery -A sim_dashboard worker -c 1 -l info")
+    run("celery -A sim_dashboard worker --detach -c 1 -l info --pidfile=\"./run/celery_%n.pid\" --logfile=\"./log/celery_%n.log\"")
 
 
 def deploy_sshkey(ssh_key=""):
