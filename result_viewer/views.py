@@ -101,6 +101,7 @@ def get_nwk_chart_img(request):
         enwcoll = db["%s_edge_nwk" % sim_id]
         df = pd.DataFrame(list(enwcoll.find({"nwk_name": nwk_name})))
         plotter.show_plot(df['time'], df['nw_usage'], "plot.png")
+
         
 
 def get_nwk_chart_data(request):

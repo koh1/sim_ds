@@ -6,7 +6,7 @@ logger = logging.getLogger()
 
 
 def convert_for_d3(data):
-    root = "SW-L1-1-1"
+    root = "SW-L0-1-1"
     r = convert_hash_for_d3_make_children(root, data)
     ret = {"name": root,
             "children": r}
@@ -52,11 +52,13 @@ def add_topology_entry(topology, entry):
     topology[entry["name"]]["children"] = {}
 
 def make_topology_entry(entry):
+    logger.debug("COMP[%s] is created" % entry["name"])
     eobj = {}
     eobj["name"] = entry["name"]
     eobj["level"] = entry["level"]
     eobj["type"] = entry["type"]
     eobj["children"] = {}
+    return eobj
 
 def get_topology_data_proto(csv_data):
     import numpy as np
@@ -65,13 +67,14 @@ def get_topology_data_proto(csv_data):
     for row in csv_data:
 #        time.sleep(0.1)
         logger.debug(row)
+        logger.debug("\ttopology length: %d" % len(topology))
         src = get_component_object(row[0])
         if not topology.has_key(src["name"]):
-            add_topology_entry(topology, src)
+            topology[src["name"]] = make_topology_entry(src)
 
         dst = get_component_object(row[1])
         if not topology.has_key(dst["name"]):
-            add_topology_entry(topology, dst)
+            topology[dst["name"]] = make_topology_entry(dst)
 
         if len(row) == 2:
             logger.debug("\troute length: %d" % len(row))
@@ -91,7 +94,8 @@ def get_topology_data_proto(csv_data):
             logger.debug("\troute length: %d" % len(row))
             mid = get_component_object(row[2])
             if not topology.has_key(mid["name"]):
-                add_topology_entry(topology, mid)
+                topology[mid["name"]] = make_topology_entry(mid)
+
             v = which_is_parent(src, mid)
             logger.debug("\tcomparing %s and %s" % (src["name"], mid["name"]))
             if v == 0:
@@ -116,13 +120,13 @@ def get_topology_data_proto(csv_data):
                 logger.debug("\tcould not judge which is parent.")
                 sys.exit(1)
         else:
-            logger.debug("route length: %d" % len(row))
+            logger.debug("\troute length: %d" % len(row))
             prev_via = src
             via = None
             for i in np.arange(len(row) - 3) + 2:
                 via = get_component_object(row[i])
-                if topology.has_key(via["name"]):
-                    add_topology_entry(topology, via)
+                if not topology.has_key(via["name"]):
+                    topology[via["name"]] = make_topology_entry(via)
                 
                 v = which_is_parent(prev_via, via)
                 logger.debug("\tcomparing %s and %s" % (prev_via["name"], via["name"]))
@@ -139,8 +143,8 @@ def get_topology_data_proto(csv_data):
                 prev_via = via
             
             row_tail = get_component_object(row[-1])
-            if topology.has_key(row_tail["name"]):
-                add_topology_entry(topology, row_tail)
+            if not topology.has_key(row_tail["name"]):
+                topology[row_tail["name"]] = make_topology_entry(row_tail)
             v = which_is_parent(row_tail, dst)
             logger.debug("\tcomparing %s and %s" % (row_tail["name"], dst["name"]))
             if v == 0:

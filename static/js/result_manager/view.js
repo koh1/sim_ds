@@ -48,7 +48,6 @@ $(function() {
 	    "width": 1024,
 	    "height": 600
 	});
-    
 });
 
 
@@ -117,7 +116,7 @@ function get_topology_data(pkid) {
 }
 
 function make_system_topology(pkid) {
-    
+
     alert(pkid);
     get_topology_data(pkid);
 }
