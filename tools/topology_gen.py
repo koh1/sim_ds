@@ -1,23 +1,34 @@
+import time
+import logging
+
+#logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
 
 
 def convert_for_d3(data):
     root = "SW-L1-1-1"
-    tree = {"name": root,
-            "children": []}
-    convert_hash_for_d3_make_children(tree["children"], root, data)
-    return tree
+    r = convert_hash_for_d3_make_children(root, data)
+    ret = {"name": root,
+            "children": r}
+    return ret
 
-def convert_for_d3_make_children(parent, p_name, data):
+def convert_for_d3_make_children(p_name, data):
+    ret = []
     for c in data[p_name]["children"]:
-        cobj = {"name": c, "children": []}
-        convert_for_d3_make_children(cobj["children"], c, data)
-        parent.append(cobj)
-def convert_hash_for_d3_make_children(parent, p_name, data):
+        cobj = {"name": c, "children": r}
+        r = convert_for_d3_make_children(c, data)
+        ret.append({"name": c,
+                    "children": r})
+    return ret
+
+def convert_hash_for_d3_make_children(p_name, data):
+    ret = []
     for k,v in data[p_name]["children"].items():
-        print "node: %s" % k
-        cobj = {"name": k, "children": []}
-        convert_hash_for_d3_make_children(cobj["children"], k, data)
-        parent.append(cobj)
+        logger.debug("node: %s, %s" % (k,v))
+        r = convert_hash_for_d3_make_children(k, data)
+        ret.append({"name": k,
+                    "children": r})
+    return ret
 
 def which_is_parent(o1, o2):
     if o1["type"] > o2["type"]:
@@ -37,12 +48,23 @@ def add_topology_entry(topology, entry):
     topology[entry["name"]] = {}
     topology[entry["name"]]["name"] = entry["name"]
     topology[entry["name"]]["level"] = entry["level"]
+    topology[entry["name"]]["type"] = entry["type"]
     topology[entry["name"]]["children"] = {}
+
+def make_topology_entry(entry):
+    eobj = {}
+    eobj["name"] = entry["name"]
+    eobj["level"] = entry["level"]
+    eobj["type"] = entry["type"]
+    eobj["children"] = {}
+
 def get_topology_data_proto(csv_data):
     import numpy as np
 
     topology = {}
     for row in csv_data:
+#        time.sleep(0.1)
+        logger.debug(row)
         src = get_component_object(row[0])
         if not topology.has_key(src["name"]):
             add_topology_entry(topology, src)
@@ -52,33 +74,49 @@ def get_topology_data_proto(csv_data):
             add_topology_entry(topology, dst)
 
         if len(row) == 2:
+            logger.debug("\troute length: %d" % len(row))
             v = which_is_parent(src, dst)
+            logger.debug("\tcomparing %s and %s" % (src["name"], dst["name"]))
             if v == 0:
+                logger.debug("\t%s is parent" % src["name"])
                 topology[src["name"]]["children"][dst["name"]] = 1
             elif v == 1:
+                logger.debug("\t%s is parent" % dst["name"])
                 topology[dst["name"]]["children"][src["name"]] = 1
             else:
-                print("could not judge which is parent.")
+                logger.debug("\tcould not judge which is parent.")
                 sys.exit(1)
+
         elif len(row) == 3:
+            logger.debug("\troute length: %d" % len(row))
             mid = get_component_object(row[2])
             if not topology.has_key(mid["name"]):
                 add_topology_entry(topology, mid)
             v = which_is_parent(src, mid)
+            logger.debug("\tcomparing %s and %s" % (src["name"], mid["name"]))
             if v == 0:
+                logger.debug("\t%s is parent" % src["name"])
                 topology[src["name"]]["children"][mid["name"]] = 1
             elif v== 1:
+                logger.debug("\t%s is parent" % mid["name"])
                 topology[mid["name"]]["children"][src["name"]] = 1
+            else:
+                logger.debug("\tcould not judge which is parent.")
+                sys.exit(1)
 
             v = which_is_parent(mid, dst)
+            logger.debug("\tcomparing %s and %s" % (mid["name"], src["name"]))
             if v == 0:
+                logger.debug("\t%s is parent" % mid["name"])
                 topology[mid["name"]]["children"][dst["name"]] = 1
             elif v == 1:
+                logger.debug("\t%s is parent" % dst["name"])
                 topology[dst["name"]]["children"][mid["name"]] = 1
             else:
-                print("could not judge which is parent.")
+                logger.debug("\tcould not judge which is parent.")
                 sys.exit(1)
         else:
+            logger.debug("route length: %d" % len(row))
             prev_via = src
             via = None
             for i in np.arange(len(row) - 3) + 2:
@@ -87,12 +125,15 @@ def get_topology_data_proto(csv_data):
                     add_topology_entry(topology, via)
                 
                 v = which_is_parent(prev_via, via)
+                logger.debug("\tcomparing %s and %s" % (prev_via["name"], via["name"]))
                 if v == 0:
+                    logger.debug("\t%s is parent" % prev_via["name"])
                     topology[prev_via["name"]]["children"][via["name"]] = 1
                 elif v == 1:
+                    logger.debug("\t%s is parent" % via["name"])
                     topology[via["name"]]["children"][prev_via["name"]] = 1
                 else:
-                    print("could not judge which is parent.")
+                    logger.debug("\tcould not judge which is parent.")
                     sys.exit(1)
                 
                 prev_via = via
@@ -101,14 +142,17 @@ def get_topology_data_proto(csv_data):
             if topology.has_key(row_tail["name"]):
                 add_topology_entry(topology, row_tail)
             v = which_is_parent(row_tail, dst)
+            logger.debug("\tcomparing %s and %s" % (row_tail["name"], dst["name"]))
             if v == 0:
+                logger.debug("\t%s is parent" % row_tail["name"])
                 topology[row_tail["name"]]["children"][dst["name"]] = 1
             elif v == 1:
+                logger.debug("\t%s is parent" % dst["name"])
                 topology[dst["name"]]["children"][row_tail["name"]] = 1
             else:
-                print("could not judge which is parent.")
+                logger.debug("\tcould not judge which is parent.")
                 sys.exit(1)
-                
+        
     return topology
 
 def get_component_object(component_name):
@@ -117,6 +161,7 @@ def get_component_object(component_name):
     if obj["name"] == "CL":
         obj["level"] = 100
         obj["type"] = 0
+
     else:
         split_name = component_name.split('-')
         obj["level"] = split_name[1][-1]
@@ -143,12 +188,12 @@ if __name__ == '__main__':
     routing_csv = csv.reader(open(p[1]), delimiter=',')
     topo_hash = get_topology_data_proto(routing_csv)
     f_hash = open("output_raw.json", 'w')
-    f_hash.write(json.dumps(topo_hash))
+    f_hash.write(json.dumps(topo_hash, sort_keys=True, indent=2))
     f_hash.close()
     res = convert_for_d3(topo_hash)
     print("%d entries" % len(res))
-    f = open("outout.json", 'w')
-    f.write(json.dumps(res))
+    f = open("output.json", 'w')
+    f.write(json.dumps(res, sort_keys=True, indent=2))
     f.close()
 
 

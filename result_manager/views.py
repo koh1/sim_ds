@@ -31,31 +31,7 @@ def index(request):
     entries = SimulationResult.objects.all()
     res_data = []
     for e in entries:
-        mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
-        mdbhost = Host.objects.get(id=mdb.host.id)
-        config = json.loads(e.config)
-        
-        res = {
-            "id": e.id,
-            "name": e.name,
-            "sim_id": e.sim_id,
-            "db_host": mdbhost.name,
-            "db_port": mdb.port,
-            "db_name": e.db_name,
-            "owner": e.owner.username,
-            "status": e.task_status,
-            "progress": e.task_progress,
-            "num_of_users": config['num_of_users'],
-            "num_of_contents": config['contents']['num_of_contents'],
-            "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
-            "step_width_us": config['step_width_us'],
-            "total_siml_time_sec": config['total_siml_time_sec'],
-            "planning_cycle": config['planning']['planning_span_us'],
-            "scale": config['scale'],
-            "num_of_areas": config['num_of_areas'],
-            "queue_method": config['queue_method']['node_queue'],
-            "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
-            }
+        res = make_entry_object(e)
         res_data.append(res)
 
     c = RequestContext(request, {
@@ -64,7 +40,7 @@ def index(request):
 
     return HttpResponse(t.render(c))
 
-
+@login_required
 def search_results(request):
     search_key = request.POST['search_key']
     res_data = []
@@ -72,41 +48,43 @@ def search_results(request):
         logger.info(request.POST['search_key'])
         entries = SimulationResult.objects.filter(sim_id__icontains=search_key)
         for e in entries:
-            mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
-            mdbhost = Host.objects.get(id=mdb.host.id)
-            config = json.loads(e.config)
-
-            res = {
-                "id": e.id,
-                "name": e.name,
-                "sim_id": e.sim_id,
-                "db_host": mdbhost.name,
-                "db_port": mdb.port,
-                "db_name": e.db_name,
-                "owner": e.owner.username,
-                "status": e.task_status,
-                "progress": e.task_progress,
-                "num_of_users": config['num_of_users'],
-                "num_of_contents": config['contents']['num_of_contents'],
-                "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
-                "step_width_us": config['step_width_us'],
-                "total_siml_time_sec": config['total_siml_time_sec'],
-                "planning_cycle": config['planning']['planning_span_us'],
-                "scale": config['scale'],
-                "num_of_areas": config['num_of_areas'],
-                "queue_method": config['queue_method']['node_queue'],
-                "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
-                }
+            res = make_entry_object(e)
             res_data.append(res)
 
         logger.info("%s" % res_data)
-#        json_str = serializers.serialize('json', entries)
         json_str = json.dumps(res_data)
         
     else:
         json_str = json.dumps([])
 
     return HttpResponse(json_str, content_type='application/json')
+
+def make_entry_object(e):
+    mdb = ResultSourceMongodb.objects.get(id=e.result_source_mongodb.id)
+    mdbhost = Host.objects.get(id=mdb.host.id)
+    config = json.loads(e.config)
+    res = {
+        "id": e.id,
+        "name": e.name,
+        "sim_id": e.sim_id,
+        "db_host": mdbhost.name,
+        "db_port": mdb.port,
+        "db_name": e.db_name,
+        "owner": e.owner.username,
+        "status": e.task_status,
+        "progress": e.task_progress,
+        "num_of_users": config['num_of_users'],
+        "num_of_contents": config['contents']['num_of_contents'],
+        "contents_size": ",".join([str(i) for i in config['contents']['size_vars_kbytes']]),
+        "step_width_us": config['step_width_us'],
+        "total_siml_time_sec": config['total_siml_time_sec'],
+        "planning_cycle": config['planning']['planning_span_us'],
+        "scale": config['scale'],
+        "num_of_areas": config['num_of_areas'],
+        "queue_method": config['queue_method']['node_queue'],
+        "user_act_span": ",".join([str(i) for i in config['user_act_defs']['delays_after_act']['means_sec']]),
+        }
+    return res
 
 @login_required
 def delete_sim_result(request, pkid):
@@ -254,7 +232,6 @@ def get_statistics(request, pkid, collection_name, column_name):
         result['max'] = df[column_name].max()
         result['min'] = df[column_name].min()
         result['mean'] = df[column_name].mean()
-    #    result['median'] = df[column_name].median()
         result['std'] = df[column_name].std()
         result['25%'] = df[column_name].quantile(.25)
         result['50%'] = df[column_name].quantile()
@@ -273,6 +250,7 @@ def get_nwk_traffic(request, pkid, nwk_name):
     db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
     result = list(db["%s_nwk" % sr.sim_id].find({"nwk_name": nwk_name}).sort({"time": 1}))
     return HttpResponse(json.dumps(result), content_type='application/json')
+
     
     
 
