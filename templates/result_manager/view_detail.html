@@ -17,7 +17,8 @@
 	<div id="topology" class="accordion-body panel-body collapse">
 	  <div id="topology_svg"></div>
 	  <br />
-	  <button class="btn btn-primary" onclick="make_system_topology( {{ id }} )">Draw</button>
+	  <button class="btn btn-primary" onclick="make_system_topology( {{ id }} , {{ config.scale  }}, {{ config.num_of_areas }})">Draw</button>
+	  <button class="btn btn-primary" onclick="replay_simulation( {{ id }} )">Relpay</button>
 	</div>
       </div>
       <div class="accordion-group panel panel-default">

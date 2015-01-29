@@ -31,6 +31,7 @@ $.ajaxSetup({
 var console_arry;
 var chart_svg;
 var topology_svg;
+var tree, nodes;
 $(function() {
     if (localStorage.getItem("console_log") == null) {
 	localStorage.setItem("console_log", JSON.stringify([]));
@@ -115,10 +116,37 @@ function clear_console() {
 function get_topology_data(pkid) {
 }
 
-function make_system_topology(pkid) {
-
-    alert(pkid);
-    get_topology_data(pkid);
+function make_system_topology(pkid,scale,num_of_areas) {
+    var url = "/static/data/topo_" + scale + "_area" + num_of_areas + ".json";
+    $.ajax({
+	async: false,
+	type: 'get',
+	url: url,
+	success: function(data) {
+	    make_system_topology_view(data);
+	}
+    });
 }
 function make_system_topology_view(data) {
+    tree = d3.layout.tree().size([1024,500]);
+    nodes = tree.nodes(data);
+
+    topology_svg.selectAll("path")
+	.data(tree.links(nodes))
+	.enter()
+	.append("path")
+	.attr("d", d3.svg.diagonal())
+	.attr("fill", "none")
+	.attr("stroke", "#337ab7")
+	.attr("stroke-width", 1)
+	.attr("transform", "translate(0, " + 10 + ")");
+    topology_svg.selectAll("circle")
+	.data(nodes)
+	.enter()
+	.append("circle")
+	.attr("cx", function(d){return d.x})
+	.attr("cy", function(d){return d.y + 10})
+	.attr("r", 5)
+	.style("stroke", "#eee")
+	.style("fill", "#337ab7");
 }
