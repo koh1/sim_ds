@@ -83,40 +83,40 @@ def setup_worker_06_mbs(repo="", branch=""):
     if repo == "":
         repo = prompt("MBS repository?: ")
         
-    cd('~')
-    run("git clone %s message_simulator" % repo)
+    with cd('~'):
+        run("git clone %s message_simulator" % repo)
     if not branch == "":
-        cd("message_simulator")
-        run("git checkout %s" % branch)
+        with cd("message_simulator"):
+            run("git checkout %s" % branch)
     
 
 def setup_worker_07_worker(repo="", branch=""):
     if repo == "":
         repo = prompt("worker repository?: ")
     
-    cd('~')
-    run("git clone %s message_simulator_gui" % repo)
+    with cd('~'):
+        run("git clone %s message_simulator_gui" % repo)
     if not branch == "":
-        cd("message_simulator_gui")
-        run("git checkout %s" % branch)
+        with cd("message_simulator_gui"):
+            run("git checkout %s" % branch)
 
-    cd('~/message_simulator_gui')
-    run("mkdir log")
-    run("mkdir run")
+    with cd('~/message_simulator_gui'):
+        run("mkdir log")
+        run("mkdir run")
 
 def setup_worker_10_update_worker(repo_dir=""):
     if repo_dir == "":
         repo_dir = prompt("local repository directory?: ")
 
-    cd(repo_dir)
-    run("git pull origin master")
+    with cd(repo_dir):
+        run("git pull origin master")
 
 def setup_worker_08_configure_worker(broker_url=""):
     pass
 
 def start_worker():
-    cd('~/message_simulator_gui')
-    run("celery -A sim_dashboard worker --detach -c 1 -l info --pidfile=\"./run/celery_%n.pid\" --logfile=\"./log/celery_%n.log\"")
+    with cd('~/message_simulator_gui'):
+        run("celery -A sim_dashboard worker --detach -c 1 -l info --pidfile=\"./run/celery_%N.pid\" --logfile=\"./log/celery_%N.log\"")
 
 
 def deploy_sshkey(ssh_key=""):
