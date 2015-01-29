@@ -25,6 +25,7 @@ def setup_worker_02_install_required_apt():
     sudo("apt-get -y install bzip2 libbz2-dev")
     sudo("apt-get -y install libssl-dev openssl")
     sudo("apt-get -y install libreadline6 libreadline6-dev")
+    sudo("apt-get -y install libmysql++-dev")
 
     ## for scipy
     sudo("apt-get -y install libblas-dev gfortran liblapack-dev")
@@ -32,6 +33,8 @@ def setup_worker_02_install_required_apt():
     ## for matplotlib
     sudo("apt-get -y install libpng12-0 libpng12-dev")
     sudo("apt-get -y install libfreetype6 libfreetype6-dev")
+    sudo("apt-get -y install libxft-dev")
+
     
 
 def setup_worker_02_install_required_yum():
@@ -61,7 +64,7 @@ def setup_worker_05_pythonlib():
     run("pip install pymongo")
     run("pip install redis")
     run("pip install PyYAML")
-    run("pip install python-mysql")
+    run("pip install mysql-python")
     run("pip install django")
     run("pip install celery")
     run("pip install django-celery")
