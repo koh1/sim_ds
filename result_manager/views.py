@@ -243,6 +243,11 @@ def get_statistics(request, pkid, collection_name, column_name):
         ret["data"] = {}
         ret["error"] = "This column's datum are not numbers."
     return HttpResponse(json.dumps(ret), content_type='application/json')
+
+
+def replay_simulation(request, pkid):
+    sr = SimulationResult.objects.get(id=pkid)
+    db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
     
 
 def get_nwk_traffic(request, pkid, nwk_name):

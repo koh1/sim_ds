@@ -2,21 +2,71 @@
   "children": [
     {
       "children": [], 
-      "name": "CN-L0-1-1"
+      "level": 0, 
+      "name": "CN-L0-1-1", 
+      "type": 0
     }, 
     {
       "children": [
         {
           "children": [], 
-          "name": "CN-L1-1-1"
+          "level": 1, 
+          "name": "PL-L1", 
+          "type": 0
         }, 
         {
           "children": [], 
-          "name": "PL-L1"
+          "level": 1, 
+          "name": "UM-L1-AID-3", 
+          "type": 0
         }, 
         {
           "children": [], 
-          "name": "CM-L1-AID-0"
+          "level": 1, 
+          "name": "UM-L1-AID-2", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "UM-L1-AID-1", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "UM-L1-AID-0", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "CN-L1-1-1", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "CM-L1-AID-1", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "CM-L1-AID-0", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "CM-L1-AID-3", 
+          "type": 0
+        }, 
+        {
+          "children": [], 
+          "level": 1, 
+          "name": "CM-L1-AID-2", 
+          "type": 0
         }, 
         {
           "children": [
@@ -26,64 +76,94 @@
                   "children": [
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CN-L4-1-3"
+                      "level": 4, 
+                      "name": "CN-L4-1-3", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-1-3"
+                  "level": 4, 
+                  "name": "SW-L4-1-3", 
+                  "type": 1
                 }, 
                 {
                   "children": [], 
-                  "name": "CN-L3-1-2"
+                  "level": 3, 
+                  "name": "CN-L3-1-2", 
+                  "type": 0
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-2-3"
+                      "level": 4, 
+                      "name": "CN-L4-2-3", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-2-3"
+                  "level": 4, 
+                  "name": "SW-L4-2-3", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-2-4"
+                      "level": 4, 
+                      "name": "CN-L4-2-4", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-2-4"
+                  "level": 4, 
+                  "name": "SW-L4-2-4", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-1-4"
+                      "level": 4, 
+                      "name": "CN-L4-1-4", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-1-4"
+                  "level": 4, 
+                  "name": "SW-L4-1-4", 
+                  "type": 1
                 }
               ], 
-              "name": "SW-L3-1-2"
+              "level": 3, 
+              "name": "SW-L3-1-2", 
+              "type": 1
             }, 
             {
               "children": [], 
-              "name": "CN-L2-1-1"
+              "level": 2, 
+              "name": "CN-L2-1-1", 
+              "type": 0
             }, 
             {
               "children": [
@@ -91,60 +171,88 @@
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-2-1"
+                      "level": 4, 
+                      "name": "CN-L4-2-1", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-2-1"
+                  "level": 4, 
+                  "name": "SW-L4-2-1", 
+                  "type": 1
                 }, 
                 {
                   "children": [], 
-                  "name": "CN-L3-1-1"
+                  "level": 3, 
+                  "name": "CN-L3-1-1", 
+                  "type": 0
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-2-2"
+                      "level": 4, 
+                      "name": "CN-L4-2-2", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-2-2"
+                  "level": 4, 
+                  "name": "SW-L4-2-2", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-1-1"
+                      "level": 4, 
+                      "name": "CN-L4-1-1", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-1-1"
+                  "level": 4, 
+                  "name": "SW-L4-1-1", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-1-2"
+                      "level": 4, 
+                      "name": "CN-L4-1-2", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-1-2"
+                  "level": 4, 
+                  "name": "SW-L4-1-2", 
+                  "type": 1
                 }
               ], 
-              "name": "SW-L3-1-1"
+              "level": 3, 
+              "name": "SW-L3-1-1", 
+              "type": 1
             }, 
             {
               "children": [
@@ -152,60 +260,88 @@
                   "children": [
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CN-L4-4-2"
+                      "level": 4, 
+                      "name": "CN-L4-4-2", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-4-2"
+                  "level": 4, 
+                  "name": "SW-L4-4-2", 
+                  "type": 1
                 }, 
                 {
                   "children": [], 
-                  "name": "CN-L3-2-1"
+                  "level": 3, 
+                  "name": "CN-L3-2-1", 
+                  "type": 0
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-4-1"
+                      "level": 4, 
+                      "name": "CN-L4-4-1", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-4-1"
+                  "level": 4, 
+                  "name": "SW-L4-4-1", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-3-1"
+                      "level": 4, 
+                      "name": "CN-L4-3-1", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-3-1"
+                  "level": 4, 
+                  "name": "SW-L4-3-1", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-3-2"
+                      "level": 4, 
+                      "name": "CN-L4-3-2", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-3-2"
+                  "level": 4, 
+                  "name": "SW-L4-3-2", 
+                  "type": 1
                 }
               ], 
-              "name": "SW-L3-2-1"
+              "level": 3, 
+              "name": "SW-L3-2-1", 
+              "type": 1
             }, 
             {
               "children": [
@@ -213,71 +349,101 @@
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-4-3"
+                      "level": 4, 
+                      "name": "CN-L4-4-3", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-4-3"
+                  "level": 4, 
+                  "name": "SW-L4-4-3", 
+                  "type": 1
                 }, 
                 {
                   "children": [], 
-                  "name": "CN-L3-2-2"
+                  "level": 3, 
+                  "name": "CN-L3-2-2", 
+                  "type": 0
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-4-4"
+                      "level": 4, 
+                      "name": "CN-L4-4-4", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-4-4"
+                  "level": 4, 
+                  "name": "SW-L4-4-4", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-3-3"
+                      "level": 4, 
+                      "name": "CN-L4-3-3", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-3-3"
+                  "level": 4, 
+                  "name": "SW-L4-3-3", 
+                  "type": 1
                 }, 
                 {
                   "children": [
                     {
                       "children": [], 
-                      "name": "CN-L4-3-4"
+                      "level": 4, 
+                      "name": "CN-L4-3-4", 
+                      "type": 0
                     }, 
                     {
                       "children": [], 
-                      "name": "CL"
+                      "level": 100, 
+                      "name": "CL", 
+                      "type": 0
                     }
                   ], 
-                  "name": "SW-L4-3-4"
+                  "level": 4, 
+                  "name": "SW-L4-3-4", 
+                  "type": 1
                 }
               ], 
-              "name": "SW-L3-2-2"
+              "level": 3, 
+              "name": "SW-L3-2-2", 
+              "type": 1
             }
           ], 
-          "name": "SW-L2-1-1"
-        }, 
-        {
-          "children": [], 
-          "name": "UM-L1-AID-0"
+          "level": 2, 
+          "name": "SW-L2-1-1", 
+          "type": 1
         }
       ], 
-      "name": "SW-L1-1-1"
+      "level": 1, 
+      "name": "SW-L1-1-1", 
+      "type": 1
     }
   ], 
-  "name": "SW-L0-1-1"
+  "level": 0, 
+  "name": "SW-L0-1-1", 
+  "type": 1
 }

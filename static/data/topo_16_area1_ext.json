@@ -1,4 +1,8 @@
 {
+  "scale": 16,
+  "area": 1,
+  "data":
+{
   "children": [
     {
       "children": [], 
@@ -410,4 +414,5 @@
   "level": 0, 
   "name": "SW-L0-1-1", 
   "type": 1
+}
 }

@@ -9,7 +9,9 @@ def convert_for_d3(data):
     root = "SW-L0-1-1"
     r = convert_hash_for_d3_make_children(root, data)
     ret = {"name": root,
-            "children": r}
+           "type": data[root]["type"],
+           "level": data[root]["level"],
+           "children": r}
     return ret
 
 def convert_for_d3_make_children(p_name, data):
@@ -27,6 +29,8 @@ def convert_hash_for_d3_make_children(p_name, data):
         logger.debug("node: %s, %s" % (k,v))
         r = convert_hash_for_d3_make_children(k, data)
         ret.append({"name": k,
+                    "type": data[k]["type"],
+                    "level": data[k]["level"],
                     "children": r})
     return ret
 
@@ -168,7 +172,7 @@ def get_component_object(component_name):
 
     else:
         split_name = component_name.split('-')
-        obj["level"] = split_name[1][-1]
+        obj["level"] = int(split_name[1][-1])
         if split_name[0] == "SW":
             obj["type"] = 1
         else:

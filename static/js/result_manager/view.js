@@ -32,6 +32,14 @@ var console_arry;
 var chart_svg;
 var topology_svg;
 var tree, nodes;
+var topo_width = 1024;
+var topo_height = 600;
+var vbox_x = 1024;
+var vbox_y = 600;
+var vbox_default_width = vbox_width = 1500;
+var vbox_default_height = vbox_height = 1000;
+var drag;
+var zoom;
 $(function() {
     if (localStorage.getItem("console_log") == null) {
 	localStorage.setItem("console_log", JSON.stringify([]));
@@ -45,10 +53,30 @@ $(function() {
 	    "height": 400
 	});
     topology_svg = d3.select("#topology_svg").append("svg")
-	.attr({
-	    "width": 1024,
-	    "height": 600
-	});
+	.attr("width", topo_width)
+	.attr("height", topo_height)
+	.attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height);
+
+    drag = d3.behavior.drag().on("drag", function(d) {
+	vbox_x -= d3.event.dx;
+	vbox_y -= d3.event.dy;
+	return topology_svg.attr("translate", "" + vbox_x + " " + vbox_y);
+    });
+    topology_svg.call(drag);
+
+    zoom = d3.behavior.zoom().on("zoom", function(d) {
+	var before_vbox_width, before_vbox_height, d_x, d_y;
+	before_vbox_width = vbox_width;
+	before_vbox_height = vbox_height;
+	vbox_width = vbox_default_width * d3.event.scale;
+	vbox_height = vbox_default_height * d3.event.scale;
+	d_x = (before_vbox_width - vbox_width) / 2;
+	d_y = (before_vbox_height - vbox_height) / 2;
+	vbox_x += d_x;
+	vbox_y += d_y;
+	return topology_svg.attr("viewBox", "" + vbox_x + " " + vbox_y + " " + vbox_width + " " + vbox_height);
+    });
+    topology_svg.call(zoom);
 });
 
 
@@ -117,7 +145,7 @@ function get_topology_data(pkid) {
 }
 
 function make_system_topology(pkid,scale,num_of_areas) {
-    var url = "/static/data/topo_" + scale + "_area" + num_of_areas + ".json";
+    var url = "/static/data/topo_" + scale + "_area" + num_of_areas + "_ext.json";
     $.ajax({
 	async: false,
 	type: 'get',
@@ -128,8 +156,8 @@ function make_system_topology(pkid,scale,num_of_areas) {
     });
 }
 function make_system_topology_view(data) {
-    tree = d3.layout.tree().size([1024,500]);
-    nodes = tree.nodes(data);
+    tree = d3.layout.tree().size([data.scale*40,1024]);
+    nodes = tree.nodes(data.data);
 
     topology_svg.selectAll("path")
 	.data(tree.links(nodes))
@@ -137,16 +165,41 @@ function make_system_topology_view(data) {
 	.append("path")
 	.attr("d", d3.svg.diagonal())
 	.attr("fill", "none")
-	.attr("stroke", "#337ab7")
+	.attr("stroke", "#aaaaaa")
 	.attr("stroke-width", 1)
 	.attr("transform", "translate(0, " + 10 + ")");
     topology_svg.selectAll("circle")
 	.data(nodes)
 	.enter()
 	.append("circle")
+	.on("click", function(d){return alert(d.name);})
 	.attr("cx", function(d){return d.x})
 	.attr("cy", function(d){return d.y + 10})
-	.attr("r", 5)
+	.attr("r", function(d) {
+	    if (d.level == 100) {
+		return 4;
+	    } else {
+		return 5 + (4 - d.level);
+	    }
+
+	})
 	.style("stroke", "#eee")
-	.style("fill", "#337ab7");
+	.style("fill", function(d) {
+	    if (d.name == "CL") {
+		return "#aaaaaa";
+	    } else {
+		if (d.type == 1) {
+		    return "#337ab7";
+		} else {
+		    return "#d9534f";
+		    //		return "#5bc0de";
+
+		}
+	    }
+	});
+
+}
+
+
+function replay_simulation(pkid) {
 }
