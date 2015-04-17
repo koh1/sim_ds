@@ -32,12 +32,12 @@ var console_arry;
 var chart_svg;
 var topology_svg;
 var tree, nodes;
-var topo_width = 1024;
-var topo_height = 600;
-var vbox_x = 1024;
-var vbox_y = 600;
-var vbox_default_width = vbox_width = 1500;
-var vbox_default_height = vbox_height = 1000;
+var topo_width = $(window).width()-100;
+var topo_height = $(window).height()-300;
+var vbox_x = $(window).width()-100;
+var vbox_y = $(window).height()-300;
+var vbox_default_width = vbox_width = $(window).width()-100;
+var vbox_default_height = vbox_height = $(window).height()-300;
 var drag;
 var zoom;
 $(function() {
