@@ -39,7 +39,7 @@ class SimulationResult(models.Model):
     def __unicode__(self):
         return u'%s (%s)' % (self.sim_id, self.task_id)
 
-
+'''
 @receiver(pre_delete, sender=SimulationResult)
 def simulation_result_pre_delete_signal(sender, instance, **kwargs):
     mdb = instance.result_source_mongodb.get_mongo_connection()[instance.db_name]
@@ -47,3 +47,4 @@ def simulation_result_pre_delete_signal(sender, instance, **kwargs):
     for c in collections:
         mdb[c].drop()
     mdb['configs'].remove({"simulation_id":instance.sim_id})
+'''

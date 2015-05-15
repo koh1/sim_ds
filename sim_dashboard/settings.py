@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'result_viewer',
     'analyzer',
     'main',
+    'tools',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sim_ds',
         'USER': 'root',
-        'PASSWORD': 'svn123',
+        'PASSWORD': 'vagrant',
         'HOST': '',
         'PORT': '',
         
