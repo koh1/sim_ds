@@ -1,5 +1,6 @@
 import sys
 import json
+import re
 
 from pymongo import MongoClient
 from django.core.management.base import BaseCommand
@@ -47,7 +48,10 @@ class Command(BaseCommand):
                 del(config["_id"])
                 if len(list(SimulationResult.objects.filter(sim_id=config["simulation_id"]))) > 0:
                     continue
-                
+                route_list = config["route_list"].split('/')[-1]
+                m = re.match(r"^routing_(\d+)_.+area(\d+)\.csv$", route_list)
+                config["scale"] = m.group(0)
+                config["num_of_areas"] = m.group(1)
                 sr = SimulationResult(
                     db_name = db,
                     collections = mc[db].collection_names(),
