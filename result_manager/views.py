@@ -194,6 +194,7 @@ def view_index(request):
 
 def view_detail(request, pkid):
     sr = SimulationResult.objects.get(id=pkid)
+    clls = sr.collections
     t = loader.get_template('result_manager/view_detail.html')
     db = sr.result_source_mongodb.get_mongo_connection()[sr.db_name]
     c = RequestContext(request, {

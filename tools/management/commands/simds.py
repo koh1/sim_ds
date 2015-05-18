@@ -54,7 +54,7 @@ class Command(BaseCommand):
                 config["num_of_areas"] = m.group(1)
                 sr = SimulationResult(
                     db_name = db,
-                    collections = mc[db].collection_names(),
+                    collections = json.dumps(mc[db].collection_names()),
                     sim_id = config["simulation_id"],
                     name = config["simulation_id"],
                     task_id = "",
@@ -79,6 +79,8 @@ class Command(BaseCommand):
             print(self.show_sim_configs(mc, args[3]))
         elif args[2] == "regall":
             self.bulk_register_result(mc)
+        else:
+            print("no option %s" % args[2])
     
 if __name__ == '__main__':
     pass
